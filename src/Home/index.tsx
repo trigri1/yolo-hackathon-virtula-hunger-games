@@ -4,6 +4,7 @@ import {
   } from "react-router-dom";
 import Cell from '../Maze/Cell';
 import "../Maze/styles.css";
+import "./styles.css";
 
 export default function Home() {
     const [character, setCharacter] = useState<Cell>();
