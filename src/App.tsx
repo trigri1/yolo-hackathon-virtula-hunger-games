@@ -16,7 +16,7 @@ export default function App() {
             <Game />
           </Route>
           <Route path="/">
-            <Game />
+            <Home />
           </Route>
         </Switch>
     </Router>
