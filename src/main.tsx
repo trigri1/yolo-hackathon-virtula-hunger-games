@@ -145,7 +145,7 @@ function getMapState(map: any) {
     }
   });
   console.log(`map after all characters`, finalMap);
-  return finalMap;
+  return [...finalMap];
 }
 
 const Game = () => {
@@ -158,12 +158,7 @@ const Game = () => {
     console.log(`initialMap count ${counter}`, initialMap);
     setMap(initialMap as any);
     init({ map: initialMap });
-    // setMap(getMapState(map || initialMap) as any);
-    // setGameState();
-    // if (gameEnded) {
-    //   console.log(`game ended}`);
-    // }
-    const interval = setTimeout(() => {
+    const interval = setInterval(() => {
       counter++;
       setMap(getMapState(map || initialMap) as any);
       setGameState();
@@ -171,7 +166,7 @@ const Game = () => {
         console.log(`game ended`);
         clearInterval(interval);
       }
-    }, 3000);
+    }, 1000);
     return () => clearInterval(interval);
   }, []);
   return <div>{map ? <Maze map={map} /> : null}</div>;
