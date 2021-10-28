@@ -1,9 +1,9 @@
-import "./style.css";
-import React, { useEffect, useState } from "react";
-import Maze from "./Maze";
-import charactersConfig from "./character/config";
-import { getCharacterMapState, init } from "./character";
-import { MazeBuilder } from "./Maze/mazeGenerator";
+import './style.css';
+import React, { useEffect, useState } from 'react';
+import Maze from './Maze';
+import charactersConfig from './character/config';
+import { getCharacterMapState, init } from './character';
+import { MazeBuilder } from './Maze/mazeGenerator';
 
 let gameEnded = false;
 let winner;
@@ -21,9 +21,9 @@ let initialMap = [
 
 const characters = [
   // statuses: 0 - alive, 1 - won, -1 - dead
-  { number: 4, status: 0, name: "strong", index: 0 },
-  { number: 5, status: 0, name: "agile", index: 1 },
-  { number: 6, status: 0, name: "wise", index: 2 },
+  { number: 4, status: 0, name: 'strong', index: 0 },
+  { number: 5, status: 0, name: 'agile', index: 1 },
+  { number: 6, status: 0, name: 'wise', index: 2 },
 ];
 
 function encounterResult(character: number, enemy: number) {
