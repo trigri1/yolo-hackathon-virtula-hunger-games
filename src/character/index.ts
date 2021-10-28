@@ -1,8 +1,8 @@
-import CHARACTER_CONFIG from "./config";
-import PF, { DiagonalMovement } from "pathfinding";
-import canCharacterMoveToPosition from "./CharacterBehaviour";
-import Cell from "../Maze/Cell";
-import getRandomInRange from "../utils/getRandomInRange";
+import CHARACTER_CONFIG from './config';
+import PF, { DiagonalMovement } from 'pathfinding';
+import canCharacterMoveToPosition from './CharacterBehaviour';
+import Cell from '../Maze/Cell';
+import getRandomInRange from '../utils/getRandomInRange';
 
 const characters = {
   strong: {
@@ -43,15 +43,15 @@ const characters = {
 //   [0, 1, 0, 0, 0, 1, 0, 0],
 // ];
 
-const isCloseCell = ({ position, cell }) => {
+const isCloseCell = ({ position, cell }: any) => {
   const [x, y] = position;
   const [x1, y1] = cell;
   return Math.abs(x - x1) <= 1 && Math.abs(y - y1) <= 1;
 };
 
-const getCurrentVision = ({ map, char }) => {
+const getCurrentVision = ({ map, char }: any) => {
   const { position, vision } = char;
-  const newVision = [];
+  const newVision: any[][] = [];
   map.forEach((row: any, yIndex: number) => {
     row.forEach((cell: number, xIndex: number) => {
       if (vision && vision[yIndex][xIndex] !== -1) {
@@ -83,7 +83,7 @@ const CHARACTER_NUMBER_TO_TYPE = Object.keys(CHARACTER_CONFIG).reduce(
   {} as any
 );
 
-export const init = ({ map }) => {
+export const init = ({ map }: any) => {
   map.forEach((row: any, yIndex: number) => {
     row.forEach((cell: number, xIndex: number) => {
       const characterType = CHARACTER_NUMBER_TO_TYPE[cell];
@@ -100,13 +100,13 @@ export const init = ({ map }) => {
 };
 
 type Args = {
-  type: "strong" | "agile" | "wise";
+  type: 'strong' | 'agile' | 'wise';
   map: any;
 };
 
-const getPossibleCells = ({ type }) => {
+const getPossibleCells = ({ type }: any) => {
   const { vision, visitedCells } = characters[type];
-  const cells = [];
+  const cells: any[] = [];
   vision.forEach((row: any, yIndex: number) => {
     row.forEach((cell: number, xIndex: number) => {
       if (cell === -1) {
@@ -125,12 +125,12 @@ const getPossibleCells = ({ type }) => {
   return cells;
 };
 
-const getRandomCell = ({ possibleCells }) => {
+const getRandomCell = ({ possibleCells }: any) => {
   const i = getRandomInRange(0, possibleCells.length - 1);
   return possibleCells[i];
 };
 
-const getNextCell = ({ type, map }) => {
+const getNextCell = ({ type, map }: any) => {
   const possibleCells = getPossibleCells({ type });
   let cell = getRandomCell({ possibleCells });
   while (!canCharacterMoveToPosition(type, cell, map)) {
@@ -139,7 +139,7 @@ const getNextCell = ({ type, map }) => {
   return cell;
 };
 
-const getNextCellToMove = ({ nextCell, type, map }) => {
+const getNextCellToMove = ({ nextCell, type, map }: any) => {
   const grid = new PF.Grid(map);
   const { allowDiagonal } = CHARACTER_CONFIG[type];
   const { position } = characters[type];
