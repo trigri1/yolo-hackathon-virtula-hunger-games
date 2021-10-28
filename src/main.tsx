@@ -128,7 +128,6 @@ function getMapState() {
 const App = () => {
   const [map, setMap] = useState(null);
   useEffect(() => {
-    // setMap(new MazeBVuilds);
     const builder = new MazeBuilder(8, 8);
     setMap(builder.maze);
     init({ map: builder.maze });
@@ -139,8 +138,6 @@ const App = () => {
         getCharacterMapState({ type: name, map: initialMap })
       );
     });
-    // const builder = new MazeBuilder();
-    // console.log("maze", { maze: builder.maze });
   }, []);
   return (
     <div>
