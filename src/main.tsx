@@ -140,7 +140,6 @@ const App = () => {
   useEffect(() => {
     const builder = new MazeBuilder(8, 8);
     const initialMap = builder.maze;
-    setMap(initialMap as any);
     init({ map: initialMap });
     const interval = setInterval(() => {
       setMap(getMapState(initialMap, characters, setCharacters) as any);

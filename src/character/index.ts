@@ -2,6 +2,7 @@ import CHARACTER_CONFIG from "./config";
 import PF, { DiagonalMovement } from "pathfinding";
 import canCharacterMoveToPosition from "./CharacterBehaviour";
 import Cell from "../Maze/Cell";
+import getRandomInRange from "../utils/getRandomInRange";
 
 const characters = {
   strong: {
@@ -41,6 +42,12 @@ const characters = {
 //   [0, 0, 0, 0, 0, 0, 0, 0],
 //   [0, 1, 0, 0, 0, 1, 0, 0],
 // ];
+
+const isCloseCell = ({ position, cell }) => {
+  const [x, y] = position;
+  const [x1, y1] = cell;
+  return Math.abs(x - x1) <= 1 && Math.abs(y - y1) <= 1;
+};
 
 const getCurrentVision = ({ map, char }) => {
   const { position, vision } = char;
@@ -102,6 +109,9 @@ const getPossibleCells = ({ type }) => {
   const cells = [];
   vision.forEach((row: any, yIndex: number) => {
     row.forEach((cell: number, xIndex: number) => {
+      if (cell === -1) {
+        return;
+      }
       if (cell === Cell.Obstacle) {
         return;
       }
@@ -109,36 +119,68 @@ const getPossibleCells = ({ type }) => {
       if (visitedCells[address]) {
         return;
       }
-      cells.push({
-        position: [xIndex, yIndex],
-      });
+      cells.push([xIndex, yIndex]);
     });
   });
   return cells;
 };
 
+const getRandomCell = ({ possibleCells }) => {
+  const i = getRandomInRange(0, possibleCells.length - 1);
+  return possibleCells[i];
+};
+
 const getNextCell = ({ type, map }) => {
   const possibleCells = getPossibleCells({ type });
-  let i = 0;
-  let cell = possibleCells[i];
+  let cell = getRandomCell({ possibleCells });
   while (!canCharacterMoveToPosition(type, cell, map)) {
-    if (i >= possibleCells.length - 1) {
-      i = 0;
-    } else {
-      ++i;
-    }
-    cell = possibleCells[i];
+    cell = getRandomCell({ possibleCells });
   }
   return cell;
 };
 
-export const getCharacterMapState = ({ type, map }: Args) => {
+const getNextCellToMove = ({ nextCell, type, map }) => {
   const grid = new PF.Grid(map);
-  const config = CHARACTER_CONFIG[type];
+  const { allowDiagonal } = CHARACTER_CONFIG[type];
+  const { position } = characters[type];
+  const finder = new PF.AStarFinder({
+    diagonalMovement: allowDiagonal
+      ? DiagonalMovement.Always
+      : DiagonalMovement.Never,
+  });
+  // const mapForPathFinding = map.reduce((acc, current) => {
+  //   acc.push(
+  //     current.map((el: number) => {
+  //       return el === 0 ? el : 1;
+  //     }, [])
+  //   );
+  //   return acc;
+  // }, []);
+  // console.log({ position, nextCell, map });
+  const path = finder.findPath(
+    position[0],
+    position[1],
+    nextCell[0],
+    nextCell[1],
+    grid
+  );
+  console.log({ path });
+  return path[0];
+};
+
+export const getCharacterMapState = ({ type, map }: Args) => {
+  const { numberOnMap } = CHARACTER_CONFIG[type];
   // const { position, vision } = characters[type];
-  const { vision } = characters[type];
-  // const nextCellPosition = getNextCell({ type, map });
-  // const nextCellToMove = getNextCellToMove({nextCell: nextCellPosition, });
+  const { vision, visitedCells } = characters[type];
+  const nextCellPosition = getNextCell({ type, map });
+  const nextCellToMove = getNextCellToMove({
+    nextCell: nextCellPosition,
+    type,
+    map,
+  });
+  const [x, y] = nextCellToMove;
+  vision[y][x] = numberOnMap;
+  visitedCells[`${x}-${y}`] = true;
   // const finder = new PF.AStarFinder({
   //   diagonalMovement: playerConfig.allowDiagonal
   //     ? DiagonalMovement.Always
