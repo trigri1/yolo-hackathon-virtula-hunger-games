@@ -5,7 +5,7 @@ import charactersConfig from './character/config';
 import { getCharacterMapState, init } from './character';
 import { MazeBuilder } from './Maze/mazeGenerator';
 
-let gameEnded = 0;
+let gameEnded = false;
 let winner;
 
 let initialMap = [
@@ -47,6 +47,7 @@ function encounterResult(character: number, enemy: number) {
 
 function finishGame(winner: any) {
   characters[winner.index].status = 1;
+  gameEnded = true;
 }
 
 function killCharacter(character: any) {
@@ -108,7 +109,7 @@ function updateMapState(characterMapState: any, character: any, map: any) {
 }
 
 function setGameState() {
-  let winner = characters.find((char) => char.status === 1);
+  winner = characters.find((char) => char.status === 1);
   const charsLeft = characters.filter((char) => char.status !== -1);
   if (charsLeft.length === 1 && !winner) {
     winner = charsLeft[0];
@@ -136,11 +137,15 @@ const Game = () => {
   useEffect(() => {
     const builder = new MazeBuilder(8, 8);
     const initialMap = builder.maze;
-    console.log('initialMap', initialMap);
+    console.log("initialMap", initialMap);
     setMap(initialMap as any);
     init({ map: initialMap });
     const interval = setInterval(() => {
       setMap(getMapState(initialMap) as any);
+      setGameState();
+      if (gameEnded) {
+        clearInterval(interval);
+      }
     }, 1000);
     return () => clearInterval(interval);
   }, []);
