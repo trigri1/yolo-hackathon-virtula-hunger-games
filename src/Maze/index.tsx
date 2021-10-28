@@ -1,29 +1,29 @@
 import classnames from "classnames";
-import React, { CSSProperties, useEffect, useState } from 'react';
-import { Cell } from './mazeGenerator';
+import React, { CSSProperties, useEffect, useState } from "react";
+import { Cell } from "./mazeGenerator";
 import "./styles.css";
 
 const outOfBoardCords = [-1, -1];
 
-const getCharPositions = (map: Cell[][]): number[][] => {
+const useGetCharPositions = (map: Cell[][]): number[][] => {
   const positions = [outOfBoardCords, outOfBoardCords, outOfBoardCords];
   map.every((row, rowIndex) => {
-      return row.every((cell, columnIndex) => {
-        if (cell === Cell.Character_1) {
-          positions[0] = [rowIndex, columnIndex];
-        }
-        if (cell === Cell.Character_2) {
-          positions[1] = [rowIndex, columnIndex];
-        }
-        if (cell === Cell.Character_3) {
-          positions[2] = [rowIndex, columnIndex];
-        }
-        return !positions.every((cords) => cords !== outOfBoardCords);
-      })
-    }
-  );
+    return row.every((cell, columnIndex) => {
+      if (cell === Cell.Character_1) {
+        positions[0] = [rowIndex, columnIndex];
+      }
+      if (cell === Cell.Character_2) {
+        positions[1] = [rowIndex, columnIndex];
+      }
+      if (cell === Cell.Character_3) {
+        positions[2] = [rowIndex, columnIndex];
+      }
+      return !positions.every((cords) => cords !== outOfBoardCords);
+    });
+  });
+  console.log(positions);
   return positions;
-}
+};
 
 function getStyle(coords: number[]): CSSProperties {
   return {
@@ -33,36 +33,39 @@ function getStyle(coords: number[]): CSSProperties {
 }
 
 const Maze = ({ map }: { map: Cell[][] }) => {
-  const [charsPositions, setCharPositions] = useState([outOfBoardCords, outOfBoardCords, outOfBoardCords]);
+  const [charsPositions, setCharPositions] = useState([
+    outOfBoardCords,
+    outOfBoardCords,
+    outOfBoardCords,
+  ]);
 
   useEffect(() => {
-    setCharPositions(getCharPositions(map));
+    console.log("updating coords", new Date());
+    setCharPositions(useGetCharPositions(map));
   }, [map]);
 
   return (
     <div className="wrapper">
       <div className="map">
-        {
-          map.map((row, rowIndex) => {
-            return (
-              <div className="row" key={`row-${rowIndex}`}>
-                {
-                  row.map((column, columnIndex) => {
-                    return (
-                      <div className={classnames({
-                        cell: true,
-                        wall: column === Cell.Rock,
-                        treasure: column === Cell.Treasure,
-                        enemy: column === Cell.Enemy,
-                      })} key={`cell-${columnIndex}`}>
-                      </div>
-                    )
-                  })
-                }
-              </div>
-            )
-          })
-        }
+        {map.map((row, rowIndex) => {
+          return (
+            <div className="row" key={`row-${rowIndex}`}>
+              {row.map((column, columnIndex) => {
+                return (
+                  <div
+                    className={classnames({
+                      cell: true,
+                      wall: column === Cell.Rock,
+                      treasure: column === Cell.Treasure,
+                      enemy: column === Cell.Enemy,
+                    })}
+                    key={`cell-${columnIndex}`}
+                  ></div>
+                );
+              })}
+            </div>
+          );
+        })}
       </div>
       <div className="cell wise down" style={getStyle(charsPositions[0])} />
       <div className="cell strong left" style={getStyle(charsPositions[1])} />

@@ -1,3 +1,82 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing:border-box;
+}
+body {
+    width: 100%;
+    height: 100vh;
+    background-color:#000;
+
+    display:grid;
+    place-items:center;
+}
+img {
+    width: 30%;
+    /* width: 15vw; */
+    height: 100%;
+    object-fit:cover;
+
+    -webkit-box-reflect:below 2px linear-gradient(transparent, transparent, #0004);
+
+    transform-origin:center;
+    transform:perspective(800px) rotateY(25deg);
+    transition:0.5s;
+}
+
+.container {
+    max-width:600px;
+    max-height:350px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    /* gap: 10vw; */
+    gap:200px;
+
+}
+/* .container:hover img {
+  opacity:0.3;
+}
+.container img:hover {
+  transform:perspective(800px)       rotateY(0deg);
+  opacity:1;
+} */
+
+/* .character {
+    display: contents;
+} */
+
+/* a.item {
+  vertical-align: top;
+  display: inline-block;
+  text-align: center;
+  width: 120px;
+} */
+.caption {
+    display: none;
+    /* -webkit-box-reflect:below 2px linear-gradient(transparent, transparent, #0004);
+
+    transform-origin:center;
+    transform:perspective(800px) rotateY(25deg);
+    transition:0.5s; */
+}
+
+/* .container:hover {
+  display: block;
+} */
+
+.strong {
+    background-image: url("./images/strong.png");
+}
+
+h1 {
+    color: bisque;
+    text-align: center;
+    font-family: fantasy;
+    margin-bottom: 20px;
+}
+
+
 .wrapper {
     position: relative;
     overflow: hidden;
@@ -8,14 +87,12 @@
 .map {
     grid-template-rows: repeat(10, 50px);
     gap: 0 0;
-    background-color: #a7c53f;
-    background-image: radial-gradient(circle at 0% 0%, transparent 50%, rgba(0, 0, 0, .1) 50%),
-    radial-gradient(circle at center, rgba(0, 0, 0, .1) 50%, transparent 50%),
-    radial-gradient(circle at 100% 100%, transparent 50%, rgba(0, 0, 0, .1) 50%),
-    radial-gradient(circle at 0% 100%, transparent 50%, rgba(0, 0, 0, .1) 50%),
-    radial-gradient(circle at 100% 0%, transparent 50%, rgba(0, 0, 0, .1) 50%);
-    background-size: 100% 100%;
     width: fit-content;
+    background-image: url(/src/Maze/images/tiles.png);
+    background-size: 1540px;
+    background-repeat: no-repeat;
+    background-position-y: -924px;
+    background-position-x: 0;
 }
 
 .row {
@@ -30,7 +107,11 @@
     display: grid;
     cursor: pointer;
     position: relative;
-    background-size: contain;
+    background-image: url(/src/Maze/images/tiles.png);
+    background-size: 1540px;
+    background-repeat: no-repeat;
+    background-position-y: -924px;
+    background-position-x: 0;
 }
 
 .cell:after {
@@ -43,13 +124,9 @@
 }
 
 .wall {
-    color: transparent;
-    background-image: url("./images/wall.png");
+    background-position-y: -360px;
+    background-position-x: 0;
 }
-
-/*.enemy:after {*/
-/*    content: '🧟‍♂️';*/
-/*}*/
 
 .treasure:after {
     content: '💎';
@@ -116,17 +193,22 @@
 }
 
 @keyframes play {
-    from {
-        background-position: 0;
+    0%, 100% {
+        background-position-x: 0;
     }
-    to {
-        background-position: -2000px;
+    50% {
+        background-position-x: -208px;
     }
 }
 
-.enemy {
-    background-image: url("./images/zombie.png");
-    animation: play 1.8s steps(10) infinite;
-    background-size: 500px 50px;
-    transform: scale(0.75);
+.enemy:after {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    content: ' ';
+    background-image: url(/src/Maze/images/yeti.png);
+    animation: play 1.8s steps(4) infinite;
+    background-size: 333px 260px;
+    background-repeat: no-repeat;
+    background-position-y: -101px;
 }
