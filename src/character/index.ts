@@ -1,6 +1,6 @@
 import CHARACTER_CONFIG from "./config";
 import PF, { DiagonalMovement } from "pathfinding";
-import isItPossibleToGoHere from "./CharacterBehaviour";
+import canCharacterMoveToPosition from "./CharacterBehaviour";
 
 const characters = {
   strong: {
@@ -97,7 +97,7 @@ const getPossibleCell = () => {};
 
 const getNextCell = ({ type, map }) => {
   const cell = getPossibleCell();
-  while (!isItPossibleToGoHere(type, cell, map)) {
+  while (!canCharacterMoveToPosition(type, cell, map)) {
     return;
   }
 };

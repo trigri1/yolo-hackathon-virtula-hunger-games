@@ -114,19 +114,29 @@ function getMapState() {
       gameEnded = 1;
     }
   }
-  while (gameEnded == 0) {
-    // get each character state and combine them into one
-    characters.forEach((char) => {
-      let state = getCharacterMapState(char.name as any);
-      updateMapState(state, char);
-    });
-    // decide if game is ended or not, if someone died
-    setGameState();
-  }
+  characters.forEach((char) => {
+    let state = getCharacterMapState(char.name as any);
+    updateMapState(state, char);
+  });
+  // while (gameEnded == 0) {
+  //   // get each character state and combine them into one
+  //   characters.forEach((char) => {
+  //     let state = getCharacterMapState(char.name as any);
+  //     updateMapState(state, char);
+  //   });
+  //   // decide if game is ended or not, if someone died
+  //   setGameState();
+  // }
+  return initialMap;
 }
 
 const App = () => {
   const [map, setMap] = useState([]);
+  useEffect(() => {
+    // const interval = setInterval(() => {
+    //   setMap(getMapState());
+    // }, 1000);
+  }, []);
   useEffect(() => {
     const builder = new MazeBuilder(8, 8);
     setMap(builder.maze);
@@ -139,14 +149,7 @@ const App = () => {
       );
     });
   }, []);
-  return (
-    <div>
-      {
-        map ? (<Maze map={map} />) : null
-      }
-
-    </div>
-  );
+  return <div>{map ? <Maze map={map} /> : null}</div>;
 };
 
 ReactDOM.render(<App />, document.getElementById("app"));
