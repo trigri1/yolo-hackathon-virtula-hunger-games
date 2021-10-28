@@ -51,6 +51,52 @@ export class MazeBuilder {
 
     // start partitioning
     this.partition(1, this.height - 1, 1, this.width - 1);
+    this.placeTreasure();
+    this.placeEnemies();
+    this.placeCharacters();
+  }
+
+  placeCharacters() {
+    let fr: number, fc: number;
+    [fr, fc] = this.getFreeLocation();
+    this.maze[fr][fc] = Cell.Character_1;
+
+    [fr, fc] = this.getFreeLocation();
+    this.maze[fr][fc] = Cell.Character_2;
+
+    [fr, fc] = this.getFreeLocation();
+    this.maze[fr][fc] = Cell.Character_3;
+  }
+
+  placeEnemies() {
+    const enemies = this.rand(3, 20);
+    let fr: number, fc: number;
+    for (let i = 0; i < enemies; i++) {
+      [fr, fc] = this.getFreeLocation();
+      this.maze[fr][fc] = Cell.Enemy;
+    }
+  }
+
+  placeTreasure() {
+  
+    let fr: number, fc: number;
+    [fr, fc] = this.getFreeLocation();
+    this.maze[fr][fc] = Cell.Treasure;
+  }
+
+  getFreeLocation(): [number, number] {
+    let ok = false;
+    let fr=0, fc=0;
+
+    while(!ok) {
+      fr = this.rand(1, this.cols - 1)
+      fc = this.rand(1, this.rows - 1)
+
+      if(this.maze[fr][fc] === Cell.Empty) {
+        ok = true;
+      }
+    }
+    return [fr, fc];
   }
 
   initArray(value: Cell): Cell[][] {
