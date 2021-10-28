@@ -100,7 +100,7 @@
 .down {
     background-position-y: -255px;
     background-position-x: -305px;
-    animation: move-down 0.5s steps(9) infinite;
+    animation: move-down 0.5s steps(5) infinite;
 }
 
 .wise {
