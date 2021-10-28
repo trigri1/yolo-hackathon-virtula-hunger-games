@@ -7,7 +7,7 @@ import { MazeBuilder } from "./Maze/mazeGenerator";
 import { useParams } from "react-router-dom";
 
 let gameEnded = false;
-let winner;
+let winner: any;
 let selectedChar;
 let counter = 1;
 
@@ -156,7 +156,7 @@ const Game = () => {
   const { character } = useParams<any>();
   console.log(character);
   useEffect(() => {
-    const builder = new MazeBuilder(8, 8);
+    const builder = new MazeBuilder(5, 5);
     const initialMap = builder.maze;
     console.log(`initialMap count ${counter}`, initialMap);
     setMap(initialMap as any);
