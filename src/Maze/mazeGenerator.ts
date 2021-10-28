@@ -52,19 +52,15 @@ export class MazeBuilder {
     this.partition(1, this.height - 1, 1, this.width - 1);
     this.placeTreasure();
     this.placeEnemies();
-    this.placeCharacters();
+    this.placeCharacter(Cell.Character_1);
+    this.placeCharacter(Cell.Character_2);
+    this.placeCharacter(Cell.Character_3);
   }
 
-  placeCharacters() {
+  placeCharacter(ch: Cell) {
     let fr: number, fc: number;
     [fr, fc] = this.getFreeLocation();
-    this.maze[fr][fc] = Cell.Character_1;
-
-    [fr, fc] = this.getFreeLocation();
-    this.maze[fr][fc] = Cell.Character_2;
-
-    [fr, fc] = this.getFreeLocation();
-    this.maze[fr][fc] = Cell.Character_3;
+    this.maze[fr][fc] = ch;
   }
 
   placeEnemies() {
