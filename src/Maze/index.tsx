@@ -8,6 +8,7 @@ const outOfBoardCords = [-1, -1];
 const getCharPositions = (map: Cell[][]): number[][] => {
   const positions = [outOfBoardCords, outOfBoardCords, outOfBoardCords];
   map.every((row, rowIndex) => {
+      console.log(rowIndex, row);
       return row.every((cell, columnIndex) => {
         if (cell === Cell.Character_1) {
           positions[0] = [rowIndex, columnIndex];
@@ -22,6 +23,7 @@ const getCharPositions = (map: Cell[][]): number[][] => {
       })
     }
   );
+  console.log(positions);
   return positions;
 }
 
@@ -37,7 +39,7 @@ const Maze = ({ map }: { map: Cell[][] }) => {
 
   useEffect(() => {
     setCharPositions(getCharPositions(map));
-  }, []);
+  }, [map]);
 
   return (
     <div className="wrapper">
