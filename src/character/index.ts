@@ -16,16 +16,27 @@ const characters = {
   },
 } as any;
 
-const getCurrentVision = ({ map }) => {};
+const getCurrentVision = ({ map, char }) => {};
+
+const CHARACTER_NUMBER_TO_TYPE = Object.keys(CHARACTER_CONFIG).reduce(
+  (acc, current) => {
+    const config = CHARACTER_CONFIG[current];
+    acc[config.numberOnMap] = current;
+  },
+  {} as any
+);
 
 const init = ({ map }) => {
-  map.forEach((row: any, index: number) => {
-    row.forEach((cell: number, index: number) => {});
+  map.forEach((row: any, yIndex: number) => {
+    row.forEach((cell: number, xIndex: number) => {
+      const characterType = CHARACTER_NUMBER_TO_TYPE[cell];
+      if (characterType) {
+        const char = characters[characterType];
+        char.currentPosition = [xIndex, yIndex];
+        char.currentVision = getCurrentVision({ map, char });
+      }
+    });
   });
-  characters.strong.currentPosition = [5, 5];
-  characters.strong.currentVision = getCurrentVision({ map });
-
-  characters.agile.currentPosition = [10, 10];
 };
 
 type Args = {
