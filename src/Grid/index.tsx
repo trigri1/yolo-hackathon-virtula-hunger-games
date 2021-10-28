@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import "./styles.css";
 import classnames from "classnames";
-import PF from "pathfinding";
-import { generateMaze } from "../Maze";
+import PF, { DiagonalMovement } from "pathfinding";
 
 const Grid = ({ map, playerPos }: any) => {
-  const maze = generateMaze();
   const grid = new PF.Grid(map);
   const [target, setTarget] = useState<any>(null);
-  const finder = new PF.AStarFinder();
+  const finder = new PF.AStarFinder({
+    diagonalMovement: DiagonalMovement.Always,
+  });
   const path = target
     ? finder.findPath(playerPos.x, playerPos.y, target.x, target.y, grid)
     : null;
