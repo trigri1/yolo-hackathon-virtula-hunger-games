@@ -1,8 +1,8 @@
-import CHARACTER_CONFIG from './config';
-import PF, { DiagonalMovement } from 'pathfinding';
-import canCharacterMoveToPosition from './CharacterBehaviour';
-import Cell from '../Maze/cell';
-import getRandomInRange from '../utils/getRandomInRange';
+import CHARACTER_CONFIG from "./config";
+import PF, { DiagonalMovement } from "pathfinding";
+import canCharacterMoveToPosition from "./CharacterBehaviour";
+import Cell from "../Maze/cell";
+import getRandomInRange from "../utils/getRandomInRange";
 
 const characters = {
   strong: {
@@ -94,7 +94,7 @@ export const init = ({ map }: any) => {
 };
 
 type Args = {
-  type: 'strong' | 'agile' | 'wise';
+  type: "strong" | "agile" | "wise";
   map: any;
 };
 
@@ -102,8 +102,12 @@ const getPossibleCells = ({ type }: any) => {
   const { numberOnMap } = CHARACTER_CONFIG[type];
   const { vision, visitedCells } = characters[type];
   const cells: any[] = [];
+  let treasureCell = null;
   vision.forEach((row: any, yIndex: number) => {
     row.forEach((cell: number, xIndex: number) => {
+      if (cell === Cell.Treasure) {
+        treasureCell = [xIndex, yIndex];
+      }
       if (cell === -1) {
         return;
       }
@@ -120,6 +124,9 @@ const getPossibleCells = ({ type }: any) => {
       cells.push([xIndex, yIndex]);
     });
   });
+  if (treasureCell) {
+    return [treasureCell];
+  }
   return cells;
 };
 
