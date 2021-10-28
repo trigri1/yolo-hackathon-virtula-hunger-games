@@ -7,6 +7,7 @@ import { MazeBuilder } from './Maze/mazeGenerator';
 
 let gameEnded = false;
 let winner;
+let selectedChar;
 
 let initialMap = [
   [0, 0, 0, 1, 0, 0, 0, 0],
@@ -62,7 +63,7 @@ function updateMapState(characterMapState: any, character: any, map: any) {
   const treasureNumber = 2;
   characterMapState.forEach((row: any, i: number) => {
     row.forEach((_: any, j: number) => {
-      if (characterMapState[i][j] === character.number) {
+      if (characterMapState[i][j] === character.number && map[i][j] !== character.number) {
         if (characterNumbers.includes(initialMap[i][j])) {
           // characters fight
           const characterConfig = (charactersConfig as any)[character.name];
