@@ -64,7 +64,7 @@ export class MazeBuilder {
   }
 
   placeEnemies() {
-    const enemies = this.rand(3, 20);
+    const enemies = this.rand(3, this.width);
     let fr: number, fc: number;
     for (let i = 0; i < enemies; i++) {
       [fr, fc] = this.getFreeLocation();
