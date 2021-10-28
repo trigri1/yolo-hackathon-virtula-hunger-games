@@ -1,25 +1,27 @@
-.map {
+.wrapper {
+    position: relative;
+    overflow: hidden;
     display: grid;
-    /*grid-auto-flow: column;*/
-    grid-auto-columns: 50px;
-    grid-auto-rows: 50px;
-    grid-template-columns: auto;
-    grid-template-rows: auto;
-    gap: 0 0;
-    width: 500px;
-    height: 500px;
     font-size: 50px;
+}
+
+.map {
+    grid-template-rows: repeat(10, 50px);
+    gap: 0 0;
     background-color: #a7c53f;
     background-image: radial-gradient(circle at 0% 0%, transparent 50%, rgba(0, 0, 0, .1) 50%),
     radial-gradient(circle at center, rgba(0, 0, 0, .1) 50%, transparent 50%),
     radial-gradient(circle at 100% 100%, transparent 50%, rgba(0, 0, 0, .1) 50%),
     radial-gradient(circle at 0% 100%, transparent 50%, rgba(0, 0, 0, .1) 50%),
     radial-gradient(circle at 100% 0%, transparent 50%, rgba(0, 0, 0, .1) 50%);
-    background-size: 8em 8em;
+    background-size: 100% 100%;
+    width: fit-content;
 }
 
 .row {
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .cell {
@@ -51,6 +53,10 @@
 
 .treasure:after {
     content: '💎';
+}
+
+.cheetah, .bear, .wolf {
+    position: absolute;
 }
 
 .cheetah:after {

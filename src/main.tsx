@@ -47,16 +47,20 @@ function encounterResult(character: number, enemy: number) {
 
 function finishGame(winner: any) {
   characters[winner.index].status = 1;
-  winner = winner.number;
-  gameEnded = 1;
 }
 
 function killCharacter(character: any) {
+  console.log(`killing ${character.name}`)
   characters[character.index].status = -1;
 }
 
-function updateMapState(characterMapState: any, character: any) {
-  const characterNumbers = characters.map(({ number }) => number);
+function updateMapState(
+  characterMapState: any,
+  character: any,
+  map: any,
+) {
+  const initialMap = map;
+  const characterNumbers = characters.map(({ number }: any) => number);
   const enemyNumber = 3;
   const treasureNumber = 2;
   characterMapState.forEach((row: any, i: number) => {
@@ -65,8 +69,9 @@ function updateMapState(characterMapState: any, character: any) {
         // characters fight
         const characterConfig = (charactersConfig as any)[character.name];
         const enemyCharacter = characters.find(
-          (character) => character.number === initialMap[i][j]
+          (char: any) => char.number === initialMap[i][j]
         );
+        console.log(`${character.name} and ${(enemyCharacter as any).name} fight`)
         const enemyCharacterConfig = (charactersConfig as any)[
           (enemyCharacter as any).name
         ];
@@ -74,6 +79,7 @@ function updateMapState(characterMapState: any, character: any) {
           characterConfig.power,
           enemyCharacterConfig.power
         );
+        console.log(`result ${result}`);
         if (result === 0) {
           initialMap[i][j] = character.number;
           killCharacter(enemyCharacter);
@@ -100,52 +106,47 @@ function updateMapState(characterMapState: any, character: any) {
       }
     });
   });
+  return initialMap;
 }
 
-function getMapState() {
-  function setGameState() {
-    winner = characters.find((char) => char.status === 1);
-    const charsLeft = characters.filter((char) => char.status !== -1);
-    if (charsLeft.length === 1 && !winner) {
-      winner = charsLeft[0];
-    }
-    if (winner) {
-      gameEnded = 1;
-    }
+function setGameState() {
+  let winner = characters.find((char) => char.status === 1);
+  const charsLeft = characters.filter((char) => char.status !== -1);
+  if (charsLeft.length === 1 && !winner) {
+    winner = charsLeft[0];
   }
-  while (gameEnded == 0) {
-    // get each character state and combine them into one
-    characters.forEach((char) => {
-      let state = getCharacterMapState(char.name as any);
-      updateMapState(state, char);
-    });
-    // decide if game is ended or not, if someone died
-    setGameState();
-  }
+  return winner;
+}
+
+function getMapState(map: any) {
+  let finalMap = map;
+  characters.forEach((char: any) => {
+    console.log(char);
+    if (char.status === 0) {
+      let state = getCharacterMapState({ type: char.name, map });
+      console.log(`${char.name} state`, state);
+      finalMap = updateMapState(state, char, finalMap);
+      console.log(`map after update`, finalMap);
+    }
+  });
+  console.log(`map after all characters`, finalMap);
+  return finalMap;
 }
 
 const Game = () => {
-  const [map, setMap] = useState(null);
+  const [map, setMap] = useState([]);
   useEffect(() => {
-    // setMap(new MazeBVuilds);
-    const builder = new MazeBuilder(10, 10);
-    setMap(builder.maze);
-    init({ map: builder.maze });
-    characters.forEach(({ name }: any) => {
-      console.log(
-        "vision of",
-        name,
-        getCharacterMapState({ type: name, map: initialMap })
-      );
-    });
-    // const builder = new MazeBuilder();
-    // console.log("maze", { maze: builder.maze });
+    const builder = new MazeBuilder(8, 8);
+    const initialMap = builder.maze;
+    console.log('initialMap', initialMap);
+    setMap(initialMap as any);
+    init({ map: initialMap });
+    const interval = setInterval(() => {
+      setMap(getMapState(initialMap) as any);
+    }, 1000);
+    return () => clearInterval(interval);
   }, []);
-  return (
-    <div>
-      <Maze map={map} />
-    </div>
-  );
+  return <div>{map ? <Maze map={map} /> : null}</div>;
 };
 
 export default Game;
