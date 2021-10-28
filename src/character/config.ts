@@ -2,7 +2,7 @@ const CHARACTER_CONFIG: { [key: string]: any } = {
   strong: {
     numberOnMap: 4,
     allowDiagonal: false,
-    power: 70,
+    power: 90,
     avoidance: 0,
   },
   agile: {
