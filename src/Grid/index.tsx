@@ -2,11 +2,8 @@ import React, { useState } from "react";
 import "./styles.css";
 import classnames from "classnames";
 import PF, { DiagonalMovement } from "pathfinding";
-import { MazeBuilder } from "../Maze/mazeGenerator";
 
 const Grid = ({ map, playerPos }: any) => {
-  const maze = new MazeBuilder(10, 10);
-  console.log(maze);
   const grid = new PF.Grid(map);
   const [target, setTarget] = useState<any>(null);
   const finder = new PF.AStarFinder({

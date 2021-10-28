@@ -129,8 +129,9 @@ const App = () => {
   const [map, setMap] = useState(null);
   useEffect(() => {
     // setMap(new MazeBVuilds);
-    setMap(initialMap);
-    init({ map: initialMap });
+    const builder = new MazeBuilder(10, 10);
+    setMap(builder.maze);
+    init({ map: builder.maze });
     characters.forEach(({ name }: any) => {
       console.log(
         "vision of",

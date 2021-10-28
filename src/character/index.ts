@@ -78,6 +78,9 @@ export const init = ({ map }) => {
       const characterType = CHARACTER_NUMBER_TO_TYPE[cell];
       if (characterType) {
         const char = characters[characterType];
+        if (!char) {
+          return;
+        }
         char.position = [xIndex, yIndex];
         char.vision = getCurrentVision({ map, char });
       }
