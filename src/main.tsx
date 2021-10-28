@@ -46,18 +46,19 @@ function encounterResult(character: number, enemy: number) {
   return win;
 }
 
-function finishGame(winner: any) {
+function finishGame(winner: any, characters: any, setCharacters: any) {
   characters[winner.index].status = 1;
-  winner = winner.number;
-  gameEnded = 1;
+  setCharacters(characters);
 }
 
-function killCharacter(character: any) {
+function killCharacter(character: any, characters: any, setCharacters: any) {
   characters[character.index].status = -1;
+  setCharacters(characters);
 }
 
-function updateMapState(characterMapState: any, character: any) {
-  const characterNumbers = characters.map(({ number }) => number);
+function updateMapState(characterMapState: any, character: any, map: any, characters: any, setCharacters: any) {
+  const initialMap = map;
+  const characterNumbers = characters.map(({ number }: any) => number);
   const enemyNumber = 3;
   const treasureNumber = 2;
   characterMapState.forEach((row: any, i: number) => {
@@ -66,7 +67,7 @@ function updateMapState(characterMapState: any, character: any) {
         // characters fight
         const characterConfig = (charactersConfig as any)[character.name];
         const enemyCharacter = characters.find(
-          (character) => character.number === initialMap[i][j]
+          (char: any) => char.number === initialMap[i][j]
         );
         const enemyCharacterConfig = (charactersConfig as any)[
           (enemyCharacter as any).name
@@ -77,9 +78,9 @@ function updateMapState(characterMapState: any, character: any) {
         );
         if (result === 0) {
           initialMap[i][j] = character.number;
-          killCharacter(enemyCharacter);
+          killCharacter(enemyCharacter, characters, setCharacters);
         } else {
-          killCharacter(character);
+          killCharacter(character, characters, setCharacters);
         }
       } else if (initialMap[i][j] === enemyNumber) {
         // character fight enemy
@@ -92,62 +93,51 @@ function updateMapState(characterMapState: any, character: any) {
         if (result === 0) {
           initialMap[i][j] = character.number;
         } else {
-          killCharacter(character);
+          killCharacter(character, characters, setCharacters);
         }
       } else if (initialMap[i][j] === treasureNumber) {
         // character wins
         initialMap[i][j] = character.number;
-        finishGame(character);
+        finishGame(character, characters, setCharacters);
       }
     });
   });
+  return map;
 }
 
-function getMapState() {
-  function setGameState() {
-    winner = characters.find((char) => char.status === 1);
-    const charsLeft = characters.filter((char) => char.status !== -1);
-    if (charsLeft.length === 1 && !winner) {
-      winner = charsLeft[0];
-    }
-    if (winner) {
-      gameEnded = 1;
-    }
+function setGameState() {
+  let winner = characters.find((char) => char.status === 1);
+  const charsLeft = characters.filter((char) => char.status !== -1);
+  if (charsLeft.length === 1 && !winner) {
+    winner = charsLeft[0];
   }
-  characters.forEach((char) => {
+  return winner;
+}
+
+function getMapState(map: any, characters: any, setCharacters: any) {
+  let finalMap = map;
+  characters.forEach((char: any) => {
     let state = getCharacterMapState(char.name as any);
-    updateMapState(state, char);
+    finalMap = updateMapState(state, char, finalMap, characters, setCharacters);
   });
-  // while (gameEnded == 0) {
-  //   // get each character state and combine them into one
-  //   characters.forEach((char) => {
-  //     let state = getCharacterMapState(char.name as any);
-  //     updateMapState(state, char);
-  //   });
-  //   // decide if game is ended or not, if someone died
-  //   setGameState();
-  // }
-  return initialMap;
+  return finalMap;
 }
 
 const App = () => {
   const [map, setMap] = useState([]);
-  useEffect(() => {
-    // const interval = setInterval(() => {
-    //   setMap(getMapState());
-    // }, 1000);
-  }, []);
+  const [characters, setCharacters] = useState([
+    // statuses: 0 - alive, 1 - won, -1 - dead
+    { number: 4, status: 0, name: "strong", index: 0 },
+    { number: 5, status: 0, name: "agile", index: 1 },
+    { number: 6, status: 0, name: "wise", index: 2 },
+  ]);
   useEffect(() => {
     const builder = new MazeBuilder(8, 8);
-    setMap(builder.maze);
+    setMap(builder.maze as any);
     init({ map: builder.maze });
-    characters.forEach(({ name }: any) => {
-      console.log(
-        "vision of",
-        name,
-        getCharacterMapState({ type: name, map: initialMap })
-      );
-    });
+    const interval = setInterval(() => {
+      setMap(getMapState(map, characters, setCharacters) as any);
+    }, 1000);
   }, []);
   return <div>{map ? <Maze map={map} /> : null}</div>;
 };
