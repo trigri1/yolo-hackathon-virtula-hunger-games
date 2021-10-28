@@ -8,7 +8,6 @@ const outOfBoardCords = [-1, -1];
 const getCharPositions = (map: Cell[][]): number[][] => {
   const positions = [outOfBoardCords, outOfBoardCords, outOfBoardCords];
   map.every((row, rowIndex) => {
-      console.log(rowIndex, row);
       return row.every((cell, columnIndex) => {
         if (cell === Cell.Character_1) {
           positions[0] = [rowIndex, columnIndex];
@@ -23,7 +22,6 @@ const getCharPositions = (map: Cell[][]): number[][] => {
       })
     }
   );
-  console.log(positions);
   return positions;
 }
 
@@ -66,9 +64,9 @@ const Maze = ({ map }: { map: Cell[][] }) => {
           })
         }
       </div>
-      <div className="cell cheetah" style={getStyle(charsPositions[0])} />
-      <div className="cell wolf" style={getStyle(charsPositions[1])} />
-      <div className="cell bear" style={getStyle(charsPositions[2])} />
+      <div className="cell wise down" style={getStyle(charsPositions[0])} />
+      <div className="cell strong left" style={getStyle(charsPositions[1])} />
+      <div className="cell agile up" style={getStyle(charsPositions[2])} />
     </div>
   );
 };

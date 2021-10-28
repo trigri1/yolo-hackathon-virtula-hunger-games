@@ -51,15 +51,11 @@ function finishGame(winner: any) {
 }
 
 function killCharacter(character: any) {
-  console.log(`killing ${character.name}`)
+  console.log(`killing ${character.name}`);
   characters[character.index].status = -1;
 }
 
-function updateMapState(
-  characterMapState: any,
-  character: any,
-  map: any,
-) {
+function updateMapState(characterMapState: any, character: any, map: any) {
   const initialMap = map;
   const characterNumbers = characters.map(({ number }: any) => number);
   const enemyNumber = 3;
@@ -140,7 +136,7 @@ const Game = () => {
   useEffect(() => {
     const builder = new MazeBuilder(8, 8);
     const initialMap = builder.maze;
-    console.log('initialMap', initialMap);
+    console.log("initialMap", initialMap);
     setMap(initialMap as any);
     init({ map: initialMap });
     const interval = setInterval(() => {

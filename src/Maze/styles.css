@@ -55,18 +55,62 @@
     content: '💎';
 }
 
-.cheetah, .bear, .wolf {
+@keyframes move-horizontal {
+    to {
+        background-position-x: -560px;
+    }
+}
+
+@keyframes move-vertical {
+    to {
+        background-position-x: -455px;
+    }
+}
+
+@keyframes move-down {
+    to {
+        background-position-x: -558px;
+    }
+}
+
+.wise, .agile, .strong {
     position: absolute;
+    background-position-x: 0;
+    background-position-y: 0;
+    background-size: 650px;
+    background-repeat: no-repeat;
 }
 
-.cheetah:after {
-    content: '🐆';
+.right {
+    background-position-y: -456px;
+    animation: move-horizontal 0.5s steps(11) infinite;
 }
 
-.bear:after {
-    content: '🐻';
+.left {
+    transform: scaleX(-1);
+    background-position-y: -456px;
+    animation: move-horizontal 0.5s steps(11) infinite;
 }
 
-.wolf:after {
-    content: '🐺';
+.up {
+    background-position-y: -352px;
+    animation: move-vertical 0.5s steps(9) infinite;
+}
+
+.down {
+    background-position-y: -255px;
+    background-position-x: -305px;
+    animation: move-down 0.5s steps(5) infinite;
+}
+
+.wise {
+    background-image: url("./images/wise.png");
+}
+
+.agile {
+    background-image: url("./images/agile.png");
+}
+
+.strong {
+    background-image: url("./images/strong.png");
 }
