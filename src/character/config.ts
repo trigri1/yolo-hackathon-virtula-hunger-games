@@ -9,7 +9,7 @@ const CHARACTER_CONFIG = {
     numberOnMap: 5,
     allowDiagonal: true,
     power: 50,
-    avoidance: 60
+    avoidance: 50
   },
   wise: {
     numberOnMap: 6,
