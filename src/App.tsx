@@ -1,12 +1,8 @@
-import React from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
-import ReactDOM from "react-dom";
-import Home from "./Home";
-import Game from "./main";
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import ReactDOM from 'react-dom';
+import Game from './main';
+import Home from './Home';
 
 export default function App() {
   return (
@@ -23,4 +19,4 @@ export default function App() {
   );
 }
 
-ReactDOM.render(<App />, document.getElementById("app"));
+ReactDOM.render(<App />, document.getElementById('app'));
