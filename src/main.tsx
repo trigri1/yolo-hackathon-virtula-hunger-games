@@ -1,5 +1,4 @@
 import "./style.css";
-import ReactDOM from "react-dom";
 import React, { useEffect, useState } from "react";
 import Maze from "./Maze";
 import charactersConfig from "./character/config";
@@ -135,7 +134,7 @@ function getMapState(map: any) {
   return finalMap;
 }
 
-const App = () => {
+const Game = () => {
   const [map, setMap] = useState([]);
   useEffect(() => {
     const builder = new MazeBuilder(8, 8);
@@ -155,4 +154,4 @@ const App = () => {
   return <div>{map ? <Maze map={map} /> : null}</div>;
 };
 
-ReactDOM.render(<App />, document.getElementById("app"));
+export default Game;
