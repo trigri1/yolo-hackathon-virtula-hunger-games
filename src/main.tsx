@@ -8,20 +8,19 @@ let winner;
 
 let map = [
   [0, 0, 0, 1, 0, 0, 0, 0],
-  [1, 0, 0, 0, 1, 0, 1, 0],
-  [0, 0, 1, 0, 0, 1, 0, 0],
+  [1, 4, 0, 0, 1, 0, 1, 0],
+  [0, 0, 1, 0, 0, 1, 6, 0],
   [0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 1, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 1, 0, 0],
+  [0, 0, 0, 5, 0, 1, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0],
 ];
 
-const playerPos = {
-  x: 1,
-  y: 1,
-};
+function getCharacterMapState(character) {
 
-function getCharacterState(character) {
+}
+
+function setCharacterMapState(character, map) {
 
 }
 
@@ -41,14 +40,14 @@ function getMapState() {
   while (gameEnded == 0) {
     // get each character state and combine them into one
     characters.forEach(char => {
-      let state = getCharacterState(char.number);
+      let state = getCharacterMapState(char.number);
       // state [[-1, -1, 0, 4, ]]
       
     });
     // decide if game is ended or not, if someone died
     setGameState();
 
-    // update each characters map 
+    // update each characters map
   }
 }
 
