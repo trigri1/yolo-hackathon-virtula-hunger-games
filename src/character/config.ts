@@ -3,7 +3,7 @@ const CHARACTER_CONFIG: { [key: string]: any } = {
     numberOnMap: 4,
     allowDiagonal: false,
     power: 70,
-    avoidance: 15,
+    avoidance: 0,
   },
   agile: {
     numberOnMap: 5,
