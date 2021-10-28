@@ -77,6 +77,12 @@ const CHARACTER_NUMBER_TO_TYPE = Object.keys(CHARACTER_CONFIG).reduce(
   {} as any
 );
 
+const isCellNear = ({ point1, point2 }: any) => {
+  const horDistance = Math.abs(point1[0] - point2[0]);
+  const vertDistance = Math.abs(point1[1] - point2[1]);
+  return horDistance <= 1 && vertDistance <= 1;
+};
+
 export const init = ({ map }: any) => {
   map.forEach((row: any, yIndex: number) => {
     row.forEach((cell: number, xIndex: number) => {
@@ -100,8 +106,9 @@ type Args = {
 
 const getPossibleCells = ({ type }: any) => {
   const { numberOnMap } = CHARACTER_CONFIG[type];
-  const { vision, visitedCells } = characters[type];
+  const { vision, visitedCells, position } = characters[type];
   const cells: any[] = [];
+  const nearestCells: any[] = [];
   let treasureCell = null;
   vision.forEach((row: any, yIndex: number) => {
     row.forEach((cell: number, xIndex: number) => {
@@ -121,11 +128,22 @@ const getPossibleCells = ({ type }: any) => {
       if (visitedCells[address]) {
         return;
       }
+      const isNear = isCellNear({
+        point1: position,
+        point2: [xIndex, yIndex],
+      });
+      if (isNear) {
+        nearestCells.push([xIndex, yIndex]);
+        return;
+      }
       cells.push([xIndex, yIndex]);
     });
   });
   if (treasureCell) {
     return [treasureCell];
+  }
+  if (nearestCells.length) {
+    return nearestCells;
   }
   return cells;
 };
@@ -170,7 +188,6 @@ const getNextCellToMove = ({ nextCell, type, map }: any) => {
     nextCell[1],
     grid
   );
-  console.log({ path, position, nextCell });
   return path[1];
 };
 

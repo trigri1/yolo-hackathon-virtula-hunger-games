@@ -156,7 +156,7 @@ const Game = () => {
   const { character } = useParams<any>();
   console.log(character);
   useEffect(() => {
-    const builder = new MazeBuilder(5, 5);
+    const builder = new MazeBuilder(8, 8);
     const initialMap = builder.maze;
     console.log(`initialMap count ${counter}`, initialMap);
     setMap(initialMap as any);
