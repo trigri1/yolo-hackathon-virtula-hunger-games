@@ -1,15 +1,15 @@
 import CHARACTER_CONFIG from "./config";
 
-const isItPossibleToGoHere = (character, nextPosition, map) => {
-
-  const { type } = character;
-  const abilities = CHARACTER_CONFIG[type];
-  const cell = map[nextPosition.y][nextPosition.x];
+const canCharacterMoveToPosition = (characterType: String, position: [], map) => {
+  const abilities = CHARACTER_CONFIG[characterType];
+  const cell = map[position[1]][position[0]];
 
   if (cell == 0 || cell == 2) {
     return true;
-  } else if (cell == 3 ||cell == 4||cell == 5||cell == 6) {
+  } else if (cell == 3 || cell == 4 || cell == 5 || cell == 6) {
     return !shouldAvoidMovement(abilities.avoidance)
+  } else {
+    return true;
   }
 }
 
@@ -18,4 +18,4 @@ function shouldAvoidMovement(charAvoidance) {
   return avoidanceProb < charAvoidance;
 }
 
-export default isItPossibleToGoHere;
+export default canCharacterMoveToPosition;

@@ -1,9 +1,11 @@
 import classnames from "classnames";
 import React from 'react';
-import { Cell } from './mazeGenerator';
+import { Cell, MazeBuilder } from './mazeGenerator';
 import "./styles.css";
 
 const Maze = ({ map }: { map: Cell[][] }) => {
+  const maze = new MazeBuilder(10, 10);
+  console.log(maze);
   return (
     <div className="map">
       {

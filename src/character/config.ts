@@ -17,6 +17,12 @@ const CHARACTER_CONFIG = {
     power: 30,
     avoidance: 80
   },
+  enemy: {
+    numberOnMap: 3,
+    allowDiagonal: false,
+    power: 30,
+    avoidance: 0
+  }
 };
 
 export default CHARACTER_CONFIG;
