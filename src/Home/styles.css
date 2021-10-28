@@ -29,7 +29,7 @@ a {
   gap: 200px;
 }
 
-.cell {
+.character {
   height: 50px;
   width: 50px;
   display: grid;
@@ -41,11 +41,11 @@ a {
   background-position-x: -305px;
 }
 
-.cell:hover {
+.character:hover {
   animation: move-down 0.5s steps(5) infinite;
 }
 
-.cell:hover .description {
+.character:hover .description {
   display: block;
 }
 
