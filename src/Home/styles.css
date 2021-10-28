@@ -20,6 +20,11 @@ a {
   font-family: fantasy;
 }
 
+input {
+  line-height: 2;
+  margin-bottom: 20px;
+}
+
 .container {
   max-width: 600px;
   max-height: 350px;
@@ -34,20 +39,19 @@ a {
   width: 50px;
   display: grid;
   cursor: pointer;
-  position: relative;
   background-size: contain;
-
-  background-position-y: -255px;
-  background-position-x: -305px;
-
-  position: absolute;
   background-position-x: 0;
   background-position-y: 0;
   background-size: 650px;
   background-repeat: no-repeat;
+  position: static;
 }
 
 .character:hover {
+  animation: move-down 0.5s steps(5) infinite;
+}
+
+.character-moving {
   animation: move-down 0.5s steps(5) infinite;
 }
 
@@ -85,8 +89,13 @@ a {
   white-space: nowrap;
   color: rgb(255, 255, 255);
   background-color: rgb(255, 79, 15);
-  font-size: 0.875rem;
   line-height: 1.25rem;
   height: 2.5rem;
   padding: 0px 1.25rem;
+}
+
+.center {
+  width: 50%;
+  margin: 0 auto;
+  margin-bottom: 20px;
 }

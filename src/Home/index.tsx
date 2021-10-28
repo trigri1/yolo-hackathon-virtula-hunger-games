@@ -10,7 +10,13 @@ export default function Home() {
     const [character, setCharacter] = useState<Cell>();
 
     if(character) {
+        const charClass = `character stand ${getCharacterClass(character)} character-moving`
         return <div>
+
+            <div className="center">
+                <div className={charClass}>
+                </div>
+            </div>
             <header><h1>Place your bet</h1></header>
             <div>
                 <input></input><span> mBTC</span>
@@ -43,4 +49,18 @@ export default function Home() {
         </div>
       </div>
     );
+}
+
+const getCharacterClass = (value: Cell) => {
+    switch (value) {
+        case Cell.Character1:
+            return "agile";
+        case Cell.Character1:
+            return "wise";
+        case Cell.Character1:
+            return "strong";
+        default:
+            return null;
+    }
+
 }
