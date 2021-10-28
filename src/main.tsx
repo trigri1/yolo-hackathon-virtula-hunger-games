@@ -1,9 +1,9 @@
-import './style.css';
-import React, { useEffect, useState } from 'react';
-import Maze from './Maze';
-import charactersConfig from './character/config';
-import { getCharacterMapState, init } from './character';
-import { MazeBuilder } from './Maze/mazeGenerator';
+import "./style.css";
+import React, { useEffect, useState } from "react";
+import Maze from "./Maze";
+import charactersConfig from "./character/config";
+import { getCharacterMapState, init } from "./character";
+import { MazeBuilder } from "./Maze/mazeGenerator";
 
 let gameEnded = false;
 let winner;
@@ -21,9 +21,9 @@ let initialMap = [
 
 const characters = [
   // statuses: 0 - alive, 1 - won, -1 - dead
-  { number: 4, status: 0, name: 'strong', index: 0 },
-  { number: 5, status: 0, name: 'agile', index: 1 },
-  { number: 6, status: 0, name: 'wise', index: 2 },
+  { number: 4, status: 0, name: "strong", index: 0 },
+  { number: 5, status: 0, name: "agile", index: 1 },
+  { number: 6, status: 0, name: "wise", index: 2 },
 ];
 
 function encounterResult(character: number, enemy: number) {
@@ -69,7 +69,11 @@ function updateMapState(characterMapState: any, character: any, map: any) {
           const enemyCharacter = characters.find(
             (char: any) => char.number === initialMap[i][j]
           );
-          console.log(`${character.name} and ${(enemyCharacter as any).name} fight [${i}][${j}]`)
+          console.log(
+            `${character.name} and ${
+              (enemyCharacter as any).name
+            } fight [${i}][${j}]`
+          );
           const enemyCharacterConfig = (charactersConfig as any)[
             (enemyCharacter as any).name
           ];
@@ -86,7 +90,7 @@ function updateMapState(characterMapState: any, character: any, map: any) {
           }
         } else if (initialMap[i][j] === enemyNumber) {
           // character fight enemy
-          console.log(`${character.name} and enemy fight [${i}][${j}]`)
+          console.log(`${character.name} and enemy fight [${i}][${j}]`);
           const characterConfig = (charactersConfig as any)[character.name];
           const enemyConfig = (charactersConfig as any).enemy;
           const result = encounterResult(
@@ -141,12 +145,18 @@ const Game = () => {
     console.log("initialMap", initialMap);
     setMap(initialMap as any);
     init({ map: initialMap });
+    // setMap(getMapState(map || initialMap) as any);
+    // setGameState();
+    // if (gameEnded) {
+    //   console.log(`game ended}`);
+    //   // clearInterval(interval);
+    // }
     const interval = setInterval(() => {
       setMap(getMapState(map || initialMap) as any);
       setGameState();
       if (gameEnded) {
-        console.log(`game ended}`)
-        clearInterval(interval)
+        console.log(`game ended}`);
+        clearInterval(interval);
       }
     }, 1000);
     return () => clearInterval(interval);
