@@ -6,7 +6,6 @@ export enum Cell {
   Character_1,
   Character_2,
   Character_3,
-
 }
 
 export class MazeBuilder {
@@ -29,23 +28,10 @@ export class MazeBuilder {
     // place initial walls
     this.maze.forEach((row, r) => {
       row.forEach((_cell, c) => {
-        switch(r)
-          {
-            case 0:
-            case this.rows - 1:
-              this.maze[r][c] = Cell.Rock;
-              break;
-  
-            default:
-              if((r % 2) == 1) {
-                if((c == 0) || (c == this.cols - 1)) {
-                  this.maze[r][c] = Cell.Rock;
-                }
-              } else if(c % 2 == 0) {
-                this.maze[r][c] = Cell.Rock;
-              }
-  
-          }
+        if((r % 2) == 1) {
+        } else if(c % 2 == 0) {
+          this.maze[r][c] = Cell.Rock;
+        }
       });
     });
 
