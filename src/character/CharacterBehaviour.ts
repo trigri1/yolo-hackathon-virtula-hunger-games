@@ -1,4 +1,4 @@
-import CHARACTER_CONFIG from "./config";
+import CHARACTER_CONFIG from './config';
 
 const canCharacterMoveToPosition = (
   characterType: string,
@@ -17,7 +17,7 @@ const canCharacterMoveToPosition = (
   }
 };
 
-function shouldAvoidMovement(charAvoidance) {
+function shouldAvoidMovement(charAvoidance: number) {
   const avoidanceProb = Math.random() * 100;
   return avoidanceProb < charAvoidance;
 }

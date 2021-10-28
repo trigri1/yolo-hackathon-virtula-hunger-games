@@ -1,9 +1,9 @@
-import "./style.css";
-import React, { useEffect, useState } from "react";
-import Maze from "./Maze";
-import charactersConfig from "./character/config";
-import { getCharacterMapState, init } from "./character";
-import { MazeBuilder } from "./Maze/mazeGenerator";
+import './style.css';
+import React, { useEffect, useState } from 'react';
+import Maze from './Maze';
+import charactersConfig from './character/config';
+import { getCharacterMapState, init } from './character';
+import { MazeBuilder } from './Maze/mazeGenerator';
 
 let gameEnded = 0;
 let winner;
@@ -21,9 +21,9 @@ let initialMap = [
 
 const characters = [
   // statuses: 0 - alive, 1 - won, -1 - dead
-  { number: 4, status: 0, name: "strong", index: 0 },
-  { number: 5, status: 0, name: "agile", index: 1 },
-  { number: 6, status: 0, name: "wise", index: 2 },
+  { number: 4, status: 0, name: 'strong', index: 0 },
+  { number: 5, status: 0, name: 'agile', index: 1 },
+  { number: 6, status: 0, name: 'wise', index: 2 },
 ];
 
 function encounterResult(character: number, enemy: number) {
@@ -50,15 +50,11 @@ function finishGame(winner: any) {
 }
 
 function killCharacter(character: any) {
-  console.log(`killing ${character.name}`)
+  console.log(`killing ${character.name}`);
   characters[character.index].status = -1;
 }
 
-function updateMapState(
-  characterMapState: any,
-  character: any,
-  map: any,
-) {
+function updateMapState(characterMapState: any, character: any, map: any) {
   const initialMap = map;
   const characterNumbers = characters.map(({ number }: any) => number);
   const enemyNumber = 3;
@@ -71,7 +67,9 @@ function updateMapState(
         const enemyCharacter = characters.find(
           (char: any) => char.number === initialMap[i][j]
         );
-        console.log(`${character.name} and ${(enemyCharacter as any).name} fight`)
+        console.log(
+          `${character.name} and ${(enemyCharacter as any).name} fight`
+        );
         const enemyCharacterConfig = (charactersConfig as any)[
           (enemyCharacter as any).name
         ];
