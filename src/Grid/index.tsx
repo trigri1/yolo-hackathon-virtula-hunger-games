@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import "./styles.css";
 import classnames from "classnames";
 import PF from "pathfinding";
+import { generateMaze } from "../Maze";
 
 const Grid = ({ map, playerPos }: any) => {
+  const maze = generateMaze();
   const grid = new PF.Grid(map);
   const [target, setTarget] = useState<any>(null);
   const finder = new PF.AStarFinder();
