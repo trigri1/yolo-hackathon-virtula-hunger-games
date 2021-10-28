@@ -5,7 +5,7 @@ import "./styles.css";
 
 const outOfBoardCords = [-1, -1];
 
-const getCharPositions = (map: Cell[][]): number[][] => {
+const useGetCharPositions = (map: Cell[][]): number[][] => {
   const positions = [outOfBoardCords, outOfBoardCords, outOfBoardCords];
   map.every((row, rowIndex) => {
       return row.every((cell, columnIndex) => {
@@ -22,6 +22,7 @@ const getCharPositions = (map: Cell[][]): number[][] => {
       })
     }
   );
+  console.log(positions);
   return positions;
 }
 
@@ -36,7 +37,8 @@ const Maze = ({ map }: { map: Cell[][] }) => {
   const [charsPositions, setCharPositions] = useState([outOfBoardCords, outOfBoardCords, outOfBoardCords]);
 
   useEffect(() => {
-    setCharPositions(getCharPositions(map));
+    console.log('updating coords');
+    setCharPositions(useGetCharPositions(map));
   }, [map]);
 
   return (
