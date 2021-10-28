@@ -1,35 +1,72 @@
 import classnames from "classnames";
-import React from "react";
-import { Cell, MazeBuilder } from "./mazeGenerator";
+import React, { CSSProperties, useEffect, useState } from 'react';
+import { Cell } from './mazeGenerator';
 import "./styles.css";
 
+const outOfBoardCords = [-1, -1];
+
+const getCharPositions = (map: Cell[][]): number[][] => {
+  const positions = [outOfBoardCords, outOfBoardCords, outOfBoardCords];
+  map.every((row, rowIndex) => {
+      return row.every((cell, columnIndex) => {
+        if (cell === Cell.Character_1) {
+          positions[0] = [rowIndex, columnIndex];
+        }
+        if (cell === Cell.Character_2) {
+          positions[1] = [rowIndex, columnIndex];
+        }
+        if (cell === Cell.Character_3) {
+          positions[2] = [rowIndex, columnIndex];
+        }
+        return !positions.every((cords) => cords !== outOfBoardCords);
+      })
+    }
+  );
+  return positions;
+}
+
+function getStyle(coords: number[]): CSSProperties {
+  return {
+    top: `${coords[0] * 50}px`,
+    left: `${coords[1] * 50}px`,
+  };
+}
+
 const Maze = ({ map }: { map: Cell[][] }) => {
+  const [charsPositions, setCharPositions] = useState([outOfBoardCords, outOfBoardCords, outOfBoardCords]);
+
+  useEffect(() => {
+    setCharPositions(getCharPositions(map));
+  }, []);
+
   return (
-    <div className="map">
-      {map
-        ? map.map((row, rowIndex) => {
+    <div className="wrapper">
+      <div className="map">
+        {
+          map.map((row, rowIndex) => {
             return (
               <div className="row" key={`row-${rowIndex}`}>
-                {row.map((column, columnIndex) => {
-                  return (
-                    <div
-                      className={classnames({
+                {
+                  row.map((column, columnIndex) => {
+                    return (
+                      <div className={classnames({
                         cell: true,
                         wall: column === Cell.Rock,
                         treasure: column === Cell.Treasure,
                         enemy: column === Cell.Enemy,
-                        cheetah: column === Cell.Character_3,
-                        bear: column === Cell.Character_1,
-                        wolf: column === Cell.Character_2,
-                      })}
-                      key={`cell-${columnIndex}`}
-                    ></div>
-                  );
-                })}
+                      })} key={`cell-${columnIndex}`}>
+                      </div>
+                    )
+                  })
+                }
               </div>
-            );
+            )
           })
-        : null}
+        }
+      </div>
+      <div className="cell cheetah" style={getStyle(charsPositions[0])} />
+      <div className="cell wolf" style={getStyle(charsPositions[1])} />
+      <div className="cell bear" style={getStyle(charsPositions[2])} />
     </div>
   );
 };

@@ -6,7 +6,6 @@ export enum Cell {
   Character_1,
   Character_2,
   Character_3,
-
 }
 
 export class MazeBuilder {

@@ -126,7 +126,7 @@ function getMapState() {
 }
 
 const App = () => {
-  const [map, setMap] = useState(null);
+  const [map, setMap] = useState([]);
   useEffect(() => {
     // setMap(new MazeBVuilds);
     const builder = new MazeBuilder(8, 8);
@@ -144,7 +144,10 @@ const App = () => {
   }, []);
   return (
     <div>
-      <Maze map={map} />
+      {
+        map ? (<Maze map={map} />) : null
+      }
+
     </div>
   );
 };
