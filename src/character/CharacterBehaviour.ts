@@ -18,9 +18,4 @@ function shouldAvoidMovement(charAvoidance) {
   return avoidanceProb < charAvoidance;
 }
 
-
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
-}
-
 export default isItPossibleToGoHere;
