@@ -1,13 +1,14 @@
-import "./style.css";
-import React, { useEffect, useState } from "react";
-import Maze from "./Maze";
-import charactersConfig from "./character/config";
-import { getCharacterMapState, init } from "./character";
-import { MazeBuilder } from "./Maze/mazeGenerator";
-import { useParams } from "react-router-dom";
+import './style.css';
+import React, { useEffect, useState } from 'react';
+import Maze from './Maze';
+import charactersConfig from './character/config';
+import { getCharacterMapState, init } from './character';
+import { MazeBuilder } from './Maze/mazeGenerator';
+import { useParams } from 'react-router-dom';
+import { EndScreen } from './End';
 
 let gameEnded = false;
-let winner;
+let winner: any;
 let selectedChar;
 let counter = 1;
 
@@ -24,9 +25,9 @@ let initialMap = [
 
 const characters = [
   // statuses: 0 - alive, 1 - won, -1 - dead
-  { number: 4, status: 0, name: "strong", index: 0 },
-  { number: 5, status: 0, name: "agile", index: 1 },
-  { number: 6, status: 0, name: "wise", index: 2 },
+  { number: 4, status: 0, name: 'strong', index: 0 },
+  { number: 5, status: 0, name: 'agile', index: 1 },
+  { number: 6, status: 0, name: 'wise', index: 2 },
 ];
 
 function encounterResult(character: number, enemy: number) {
@@ -155,6 +156,8 @@ const Game = () => {
   const [map, setMap] = useState(null);
   const { character } = useParams<any>();
   console.log(character);
+  const [isEnded, setIsEnded] = useState(false);
+  const [wonChar, setWonChar] = useState<number>();
   useEffect(() => {
     const builder = new MazeBuilder(8, 8);
     const initialMap = builder.maze;
@@ -167,12 +170,29 @@ const Game = () => {
       setGameState();
       if (gameEnded) {
         console.log(`game ended winner ${winner.name}`);
+        setIsEnded(true);
+        setWonChar(winner.number);
         clearInterval(interval);
       }
     }, 500);
     return () => clearInterval(interval);
   }, []);
-  return <div>{map ? <Maze map={map} /> : null}</div>;
+
+  return (
+    <div>
+      {map ? (
+        <>
+          {isEnded && (
+            <EndScreen
+              wonCharacter={wonChar!}
+              selectedCharacter={parseInt(character)}
+            />
+          )}
+          <Maze map={map} />
+        </>
+      ) : null}
+    </div>
+  );
 };
 
 export default Game;
