@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 let gameEnded = false;
 let winner;
 let selectedChar;
+let counter = 1;
 
 let initialMap = [
   [0, 0, 0, 1, 0, 0, 0, 0],
@@ -68,6 +69,7 @@ function updateMapState(characterMapState: any, character: any, map: any) {
         characterMapState[i][j] === character.number &&
         map[i][j] !== character.number
       ) {
+        console.log(`asd`);
         if (characterNumbers.includes(initialMap[i][j])) {
           // characters fight
           const characterConfig = (charactersConfig as any)[character.name];
@@ -111,7 +113,11 @@ function updateMapState(characterMapState: any, character: any, map: any) {
           // character wins
           initialMap[i][j] = character.number;
           finishGame(character);
+        } else {
+          initialMap[i][j] = characterMapState[i][j];
         }
+      } else if (characterMapState[i][j] !== -1) {
+        initialMap[i][j] = characterMapState[i][j];
       }
     });
   });
@@ -133,9 +139,9 @@ function getMapState(map: any) {
     console.log(char);
     if (char.status === 0) {
       let state = getCharacterMapState({ type: char.name, map });
-      console.log(`${char.name} state`, state);
+      console.log(`${char.name} state count ${counter}`, state);
       finalMap = updateMapState(state, char, finalMap);
-      console.log(`map after update`, finalMap);
+      console.log(`map after update count ${counter}`, finalMap);
     }
   });
   console.log(`map after all characters`, finalMap);
@@ -147,25 +153,25 @@ const Game = () => {
   const { character } = useParams<any>();
   console.log(character);
   useEffect(() => {
-    const builder = new MazeBuilder(8, 8);
+    const builder = new MazeBuilder(4, 4);
     const initialMap = builder.maze;
-    console.log("initialMap", initialMap);
+    console.log(`initialMap count ${counter}`, initialMap);
     setMap(initialMap as any);
     init({ map: initialMap });
     // setMap(getMapState(map || initialMap) as any);
     // setGameState();
     // if (gameEnded) {
     //   console.log(`game ended}`);
-    //   // clearInterval(interval);
     // }
-    const interval = setInterval(() => {
+    const interval = setTimeout(() => {
+      counter++;
       setMap(getMapState(map || initialMap) as any);
       setGameState();
       if (gameEnded) {
-        console.log(`game ended}`);
+        console.log(`game ended`);
         clearInterval(interval);
       }
-    }, 1000);
+    }, 3000);
     return () => clearInterval(interval);
   }, []);
   return <div>{map ? <Maze map={map} /> : null}</div>;
