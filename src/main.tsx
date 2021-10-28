@@ -39,16 +39,16 @@ function getMapState() {
     }
   }
   while (gameEnded == 0) {
+    // get each character state and combine them into one
     characters.forEach(char => {
       let state = getCharacterState(char.number);
       // state [[-1, -1, 0, 4, ]]
-
-
-
-
       
-    })
+    });
+    // decide if game is ended or not, if someone died
     setGameState();
+
+    // update each characters map
   }
 }
 
