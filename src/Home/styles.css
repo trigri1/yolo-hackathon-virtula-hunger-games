@@ -39,6 +39,12 @@ a {
 
   background-position-y: -255px;
   background-position-x: -305px;
+
+  position: absolute;
+  background-position-x: 0;
+  background-position-y: 0;
+  background-size: 650px;
+  background-repeat: no-repeat;
 }
 
 .character:hover {
@@ -47,16 +53,6 @@ a {
 
 .character:hover .description {
   display: block;
-}
-
-.wise,
-.agile,
-.strong {
-  position: absolute;
-  background-position-x: 0;
-  background-position-y: 0;
-  background-size: 650px;
-  background-repeat: no-repeat;
 }
 
 .stand {
