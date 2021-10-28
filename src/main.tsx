@@ -129,7 +129,7 @@ const App = () => {
   const [map, setMap] = useState(null);
   useEffect(() => {
     // setMap(new MazeBVuilds);
-    const builder = new MazeBuilder(10, 10);
+    const builder = new MazeBuilder(8, 8);
     setMap(builder.maze);
     init({ map: builder.maze });
     characters.forEach(({ name }: any) => {
