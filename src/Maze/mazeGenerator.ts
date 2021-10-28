@@ -14,27 +14,38 @@ export class MazeBuilder {
   private readonly height: number;
   private readonly cols: number;
   private readonly rows: number;
-  public readonly maze: any[][];
+  public readonly maze: Cell[][];
 
   constructor(width = 10, height = 10) {
 
     this.width = width;
     this.height = height;
 
-    this.cols = 2 * this.width;
-    this.rows = 2 * this.height;
+    this.cols = 2 * this.width + 1;
+    this.rows = 2 * this.height + 1;
 
     this.maze = this.initArray(Cell.Empty);
 
     // place initial walls
     this.maze.forEach((row, r) => {
       row.forEach((_cell, c) => {
-        if ((r % 2) == 1) {
-        } else {
-          if (c % 2 == 0) {
-            this.maze[r][c] = Cell.Rock;
+        switch(r)
+          {
+            case 0:
+            case this.rows - 1:
+              this.maze[r][c] = Cell.Rock;
+              break;
+  
+            default:
+              if((r % 2) == 1) {
+                if((c == 0) || (c == this.cols - 1)) {
+                  this.maze[r][c] = Cell.Rock;
+                }
+              } else if(c % 2 == 0) {
+                this.maze[r][c] = Cell.Rock;
+              }
+  
           }
-        }
       });
     });
 
@@ -42,7 +53,7 @@ export class MazeBuilder {
     this.partition(1, this.height - 1, 1, this.width - 1);
   }
 
-  initArray(value: Cell) {
+  initArray(value: Cell): Cell[][] {
     return new Array(this.rows).fill([]).map(() => new Array(this.cols).fill(value));
   }
 
