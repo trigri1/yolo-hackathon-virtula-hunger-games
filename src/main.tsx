@@ -155,9 +155,8 @@ function getMapState(map: any) {
 const Game = () => {
   const [map, setMap] = useState(null);
   const { character } = useParams<any>();
-  console.log(character);
+  console.log('OUR CHARACTER', character);
   const [isEnded, setIsEnded] = useState(false);
-  const [wonChar, setWonChar] = useState<number>();
   useEffect(() => {
     const builder = new MazeBuilder(5, 5);
     const initialMap = builder.maze;
@@ -169,9 +168,8 @@ const Game = () => {
       setMap(getMapState(map || initialMap) as any);
       setGameState();
       if (gameEnded) {
-        console.log(`game ended winner ${winner.name}`);
+        console.log(`game ended winner ${winner.name} number${winner.number}`);
         setIsEnded(true);
-        setWonChar(winner.number);
         clearInterval(interval);
       }
     }, 500);
@@ -184,8 +182,8 @@ const Game = () => {
         <>
           {isEnded && (
             <EndScreen
-              wonCharacter={wonChar!}
-              selectedCharacter={parseInt(character)}
+              wonCharacter={winner.name}
+              won={parseInt(character) == winner.number}
             />
           )}
           <Maze map={map} />

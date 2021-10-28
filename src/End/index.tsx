@@ -1,26 +1,19 @@
 import React from 'react';
-import CHARACTER_CONFIG from '../character/config';
 import '../Maze/styles.css';
 import './styles.css';
 
 type Props = {
-  wonCharacter: number;
-  selectedCharacter: number;
+  wonCharacter: string;
+  won: boolean;
 };
 
-export const EndScreen = ({ wonCharacter, selectedCharacter }: Props) => {
-  const wonCharName = Object.keys(CHARACTER_CONFIG).find(
-    (c) => CHARACTER_CONFIG[c].numberOnMap == wonCharacter
-  );
-
+export const EndScreen = ({ wonCharacter, won }: Props) => {
   return (
     <div className="modal">
       <div className="text won">
-        The winner is <span className={`cell ${wonCharName} stand`}></span>
+        The winner is <span className={`cell ${wonCharacter} stand`}></span>
       </div>
-      <div className="text result">
-        {wonCharacter == selectedCharacter ? 'YOU WON !!!' : 'YOU LOST.. :('}
-      </div>
+      <div className="text result">{won ? 'YOU WON !!!' : 'YOU LOST.. :('}</div>
     </div>
   );
 };

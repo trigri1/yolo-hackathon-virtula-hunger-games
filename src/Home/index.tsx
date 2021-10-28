@@ -30,7 +30,7 @@ export default function Home() {
       </header>
       <div className="container">
         <div className="item" onClick={() => setCharacter(Cell.Character1)}>
-          <div className="character agile stand">
+          <div className="character strong stand">
             <div className="description">
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industry. Lorem Ipsum has been the industry's standard dummy text
@@ -46,14 +46,14 @@ export default function Home() {
           </div>
         </div>
         <div className="item" onClick={() => setCharacter(Cell.Character2)}>
-          <div className="character wise stand">
+          <div className="character agile stand">
             <div className="description">
               Lorem Ipsum is simply dummy text of{' '}
             </div>
           </div>
         </div>
         <div className="item" onClick={() => setCharacter(Cell.Character3)}>
-          <div className="character strong stand">
+          <div className="character wise stand">
             <div className="description">
               Lorem Ipsum is simply dummy text of{' '}
             </div>
