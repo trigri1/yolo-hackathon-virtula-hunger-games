@@ -1,5 +1,6 @@
 import CHARACTER_CONFIG from "./config";
 import PF, { DiagonalMovement } from "pathfinding";
+import isItPossibleToGoHere from "./CharacterBehaviour";
 
 const characters = {
   strong: {
@@ -42,14 +43,16 @@ const getCurrentVision = ({ map, char }) => {
   const newVision = [];
   map.forEach((row: any, yIndex: number) => {
     row.forEach((cell: number, xIndex: number) => {
-      const currentVisionOfCell = vision[yIndex][xIndex];
-      if (currentVisionOfCell !== -1) {
-        newVision[yIndex][xIndex] = currentVisionOfCell;
+      if (vision && vision[yIndex][xIndex] !== -1) {
+        newVision[yIndex][xIndex] = vision[yIndex][xIndex];
         return;
+      }
+      if (!newVision[yIndex]) {
+        newVision[yIndex] = [];
       }
       if (
         Math.abs(position[0] - xIndex) > 1 ||
-        Math.abs(position[1] - yIndex)
+        Math.abs(position[1] - yIndex) > 1
       ) {
         newVision[yIndex][xIndex] = -1;
         return;
@@ -57,17 +60,19 @@ const getCurrentVision = ({ map, char }) => {
       newVision[yIndex][xIndex] = cell;
     });
   });
+  return newVision;
 };
 
 const CHARACTER_NUMBER_TO_TYPE = Object.keys(CHARACTER_CONFIG).reduce(
   (acc, current) => {
     const config = CHARACTER_CONFIG[current];
     acc[config.numberOnMap] = current;
+    return acc;
   },
   {} as any
 );
 
-const init = ({ map }) => {
+export const init = ({ map }) => {
   map.forEach((row: any, yIndex: number) => {
     row.forEach((cell: number, xIndex: number) => {
       const characterType = CHARACTER_NUMBER_TO_TYPE[cell];
@@ -81,15 +86,25 @@ const init = ({ map }) => {
 };
 
 type Args = {
-  type: string;
+  type: "strong" | "agile" | "wise";
   map: any;
 };
 
-const getCharacterMapState = ({ type, map }: Args) => {
+const getPossibleCell = () => {};
+
+const getNextCell = ({ type, map }) => {
+  const cell = getPossibleCell();
+  while (!isItPossibleToGoHere(type, cell, map)) {
+    return;
+  }
+};
+
+export const getCharacterMapState = ({ type, map }: Args) => {
   const grid = new PF.Grid(map);
   const playerConfig = CHARACTER_CONFIG[type];
   // const { position, vision } = characters[type];
   const { vision } = characters[type];
+  // const cell = getNextCell();
   // const finder = new PF.AStarFinder({
   //   diagonalMovement: playerConfig.allowDiagonal
   //     ? DiagonalMovement.Always
@@ -97,10 +112,3 @@ const getCharacterMapState = ({ type, map }: Args) => {
   // });
   return vision;
 };
-
-const charactersHandler = {
-  getCharacterMapState,
-  init,
-};
-
-export default charactersHandler;
