@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 
 let gameEnded = false;
 let winner;
+let selectedChar;
 
 let initialMap = [
   [0, 0, 0, 1, 0, 0, 0, 0],
@@ -63,45 +64,51 @@ function updateMapState(characterMapState: any, character: any, map: any) {
   const treasureNumber = 2;
   characterMapState.forEach((row: any, i: number) => {
     row.forEach((_: any, j: number) => {
-      if (characterNumbers.includes(initialMap[i][j])) {
-        // characters fight
-        const characterConfig = (charactersConfig as any)[character.name];
-        const enemyCharacter = characters.find(
-          (char: any) => char.number === initialMap[i][j]
-        );
-        console.log(`${character.name} and ${(enemyCharacter as any).name} fight [${i}][${j}]`)
-        const enemyCharacterConfig = (charactersConfig as any)[
-          (enemyCharacter as any).name
-        ];
-        const result = encounterResult(
-          characterConfig.power,
-          enemyCharacterConfig.power
-        );
-        console.log(`result ${result}`);
-        if (result === 0) {
+      if (characterMapState[i][j] === character.number && map[i][j] !== character.number) {
+        if (characterNumbers.includes(initialMap[i][j])) {
+          // characters fight
+          const characterConfig = (charactersConfig as any)[character.name];
+          const enemyCharacter = characters.find(
+            (char: any) => char.number === initialMap[i][j]
+          );
+          console.log(
+            `${character.name} and ${
+              (enemyCharacter as any).name
+            } fight [${i}][${j}]`
+          );
+          const enemyCharacterConfig = (charactersConfig as any)[
+            (enemyCharacter as any).name
+          ];
+          const result = encounterResult(
+            characterConfig.power,
+            enemyCharacterConfig.power
+          );
+          console.log(`result ${result}`);
+          if (result === 0) {
+            initialMap[i][j] = character.number;
+            killCharacter(enemyCharacter);
+          } else {
+            killCharacter(character);
+          }
+        } else if (initialMap[i][j] === enemyNumber) {
+          // character fight enemy
+          console.log(`${character.name} and enemy fight [${i}][${j}]`);
+          const characterConfig = (charactersConfig as any)[character.name];
+          const enemyConfig = (charactersConfig as any).enemy;
+          const result = encounterResult(
+            characterConfig.power,
+            enemyConfig.power
+          );
+          if (result === 0) {
+            initialMap[i][j] = character.number;
+          } else {
+            killCharacter(character);
+          }
+        } else if (initialMap[i][j] === treasureNumber) {
+          // character wins
           initialMap[i][j] = character.number;
-          killCharacter(enemyCharacter);
-        } else {
-          killCharacter(character);
+          finishGame(character);
         }
-      } else if (initialMap[i][j] === enemyNumber) {
-        // character fight enemy
-        console.log(`${character.name} and enemy fight [${i}][${j}]`)
-        const characterConfig = (charactersConfig as any)[character.name];
-        const enemyConfig = (charactersConfig as any).enemy;
-        const result = encounterResult(
-          characterConfig.power,
-          enemyConfig.power
-        );
-        if (result === 0) {
-          initialMap[i][j] = character.number;
-        } else {
-          killCharacter(character);
-        }
-      } else if (initialMap[i][j] === treasureNumber) {
-        // character wins
-        initialMap[i][j] = character.number;
-        finishGame(character);
       }
     });
   });
@@ -112,7 +119,7 @@ function setGameState() {
   winner = characters.find((char) => char.status === 1);
   const charsLeft = characters.filter((char) => char.status !== -1);
   if (charsLeft.length === 1 && !winner) {
-    console.log(`one char left - ${char.name}`);
+    console.log(`one char left - ${charsLeft[0].name}`);
     winner = charsLeft[0];
   }
 }
@@ -139,15 +146,15 @@ const Game = () => {
   useEffect(() => {
     const builder = new MazeBuilder(8, 8);
     const initialMap = builder.maze;
-    console.log("initialMap", initialMap);
+    console.log('initialMap', initialMap);
     setMap(initialMap as any);
     init({ map: initialMap });
     const interval = setInterval(() => {
       setMap(getMapState(map || initialMap) as any);
       setGameState();
       if (gameEnded) {
-        console.log(`game ended}`)
-        clearInterval(interval)
+        console.log(`game ended}`);
+        clearInterval(interval);
       }
     }, 1000);
     return () => clearInterval(interval);

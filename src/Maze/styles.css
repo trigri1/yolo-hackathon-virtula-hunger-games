@@ -47,9 +47,9 @@
     background-image: url("./images/wall.png");
 }
 
-.enemy:after {
-    content: '🧟‍♂️';
-}
+/*.enemy:after {*/
+/*    content: '🧟‍♂️';*/
+/*}*/
 
 .treasure:after {
     content: '💎';
@@ -113,4 +113,20 @@
 
 .strong {
     background-image: url("./images/strong.png");
+}
+
+@keyframes play {
+    from {
+        background-position: 0;
+    }
+    to {
+        background-position: -2000px;
+    }
+}
+
+.enemy {
+    background-image: url("./images/zombie.png");
+    animation: play 1.8s steps(10) infinite;
+    background-size: 500px 50px;
+    transform: scale(0.75);
 }
