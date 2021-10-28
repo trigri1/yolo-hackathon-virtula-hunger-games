@@ -1,0 +1,37 @@
+h1 span {
+  display: inline!important;
+}
+
+.text {
+  color: bisque;
+  text-align: center;
+  font-family: fantasy;
+}
+
+.won {
+  font-size: 2em;
+}
+
+.result {
+  font-size: 3em;
+}
+
+.text span {
+  display: inline!important;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  background: rgba(0, 0, 0, 0.75);
+  width: 50%;
+  height: 50%;
+  z-index: 59;
+}
