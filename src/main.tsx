@@ -62,45 +62,47 @@ function updateMapState(characterMapState: any, character: any, map: any) {
   const treasureNumber = 2;
   characterMapState.forEach((row: any, i: number) => {
     row.forEach((_: any, j: number) => {
-      if (characterNumbers.includes(initialMap[i][j])) {
-        // characters fight
-        const characterConfig = (charactersConfig as any)[character.name];
-        const enemyCharacter = characters.find(
-          (char: any) => char.number === initialMap[i][j]
-        );
-        console.log(`${character.name} and ${(enemyCharacter as any).name} fight [${i}][${j}]`)
-        const enemyCharacterConfig = (charactersConfig as any)[
-          (enemyCharacter as any).name
-        ];
-        const result = encounterResult(
-          characterConfig.power,
-          enemyCharacterConfig.power
-        );
-        console.log(`result ${result}`);
-        if (result === 0) {
+      if (characterMapState[i][j] === character.number) {
+        if (characterNumbers.includes(initialMap[i][j])) {
+          // characters fight
+          const characterConfig = (charactersConfig as any)[character.name];
+          const enemyCharacter = characters.find(
+            (char: any) => char.number === initialMap[i][j]
+          );
+          console.log(`${character.name} and ${(enemyCharacter as any).name} fight [${i}][${j}]`)
+          const enemyCharacterConfig = (charactersConfig as any)[
+            (enemyCharacter as any).name
+          ];
+          const result = encounterResult(
+            characterConfig.power,
+            enemyCharacterConfig.power
+          );
+          console.log(`result ${result}`);
+          if (result === 0) {
+            initialMap[i][j] = character.number;
+            killCharacter(enemyCharacter);
+          } else {
+            killCharacter(character);
+          }
+        } else if (initialMap[i][j] === enemyNumber) {
+          // character fight enemy
+          console.log(`${character.name} and enemy fight [${i}][${j}]`)
+          const characterConfig = (charactersConfig as any)[character.name];
+          const enemyConfig = (charactersConfig as any).enemy;
+          const result = encounterResult(
+            characterConfig.power,
+            enemyConfig.power
+          );
+          if (result === 0) {
+            initialMap[i][j] = character.number;
+          } else {
+            killCharacter(character);
+          }
+        } else if (initialMap[i][j] === treasureNumber) {
+          // character wins
           initialMap[i][j] = character.number;
-          killCharacter(enemyCharacter);
-        } else {
-          killCharacter(character);
+          finishGame(character);
         }
-      } else if (initialMap[i][j] === enemyNumber) {
-        // character fight enemy
-        console.log(`${character.name} and enemy fight [${i}][${j}]`)
-        const characterConfig = (charactersConfig as any)[character.name];
-        const enemyConfig = (charactersConfig as any).enemy;
-        const result = encounterResult(
-          characterConfig.power,
-          enemyConfig.power
-        );
-        if (result === 0) {
-          initialMap[i][j] = character.number;
-        } else {
-          killCharacter(character);
-        }
-      } else if (initialMap[i][j] === treasureNumber) {
-        // character wins
-        initialMap[i][j] = character.number;
-        finishGame(character);
       }
     });
   });
