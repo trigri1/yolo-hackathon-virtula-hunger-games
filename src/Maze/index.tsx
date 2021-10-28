@@ -1,21 +1,19 @@
 import classnames from "classnames";
-import React from 'react';
-import { Cell, MazeBuilder } from './mazeGenerator';
+import React from "react";
+import { Cell, MazeBuilder } from "./mazeGenerator";
 import "./styles.css";
 
 const Maze = ({ map }: { map: Cell[][] }) => {
-  const maze = new MazeBuilder(10, 10);
-  console.log(maze);
   return (
     <div className="map">
-      {
-        map ? map.map((row, rowIndex) => {
+      {map
+        ? map.map((row, rowIndex) => {
             return (
               <div className="row" key={`row-${rowIndex}`}>
-                {
-                  row.map((column, columnIndex) => {
-                    return (
-                      <div className={classnames({
+                {row.map((column, columnIndex) => {
+                  return (
+                    <div
+                      className={classnames({
                         cell: true,
                         wall: column === Cell.Rock,
                         treasure: column === Cell.Treasure,
@@ -23,16 +21,15 @@ const Maze = ({ map }: { map: Cell[][] }) => {
                         cheetah: column === Cell.Character_3,
                         bear: column === Cell.Character_1,
                         wolf: column === Cell.Character_2,
-                      })} key={`cell-${columnIndex}`}>
-                      </div>
-                    )
-                  })
-                }
+                      })}
+                      key={`cell-${columnIndex}`}
+                    ></div>
+                  );
+                })}
               </div>
-            )
+            );
           })
-          : null
-      }
+        : null}
     </div>
   );
 };
