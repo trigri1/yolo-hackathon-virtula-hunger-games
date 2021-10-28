@@ -4,6 +4,7 @@ import Maze from './Maze';
 import charactersConfig from './character/config';
 import { getCharacterMapState, init } from './character';
 import { MazeBuilder } from './Maze/mazeGenerator';
+import { useParams } from 'react-router-dom';
 
 let gameEnded = false;
 let winner;
@@ -133,6 +134,8 @@ function getMapState(map: any) {
 
 const Game = () => {
   const [map, setMap] = useState(null);
+  const { character } = useParams<any>();
+  console.log(character);
   useEffect(() => {
     const builder = new MazeBuilder(8, 8);
     const initialMap = builder.maze;
