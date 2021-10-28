@@ -1,7 +1,7 @@
 import "./style.css";
-import PF from "pathfinding";
-import Grid from "./Grid";
 import ReactDOM from "react-dom";
+import React from "react";
+import Maze from './Maze';
 
 let gameEnded = 0;
 let winner;
@@ -52,7 +52,13 @@ function getMapState() {
   }
 }
 
+const App = () => (
+  <div>
+    <Maze map={map}/>
+  </div>
+)
+
 ReactDOM.render(
-  <Grid map={map} playerPos={playerPos} />,
+  <App />,
   document.getElementById("app")
 );
