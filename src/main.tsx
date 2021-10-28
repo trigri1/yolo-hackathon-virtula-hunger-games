@@ -1,19 +1,10 @@
-<<<<<<< HEAD
 import "./style.css";
 import React, { useEffect, useState } from "react";
 import Maze from "./Maze";
 import charactersConfig from "./character/config";
 import { getCharacterMapState, init } from "./character";
 import { MazeBuilder } from "./Maze/mazeGenerator";
-=======
-import './style.css';
-import React, { useEffect, useState } from 'react';
-import Maze from './Maze';
-import charactersConfig from './character/config';
-import { getCharacterMapState, init } from './character';
-import { MazeBuilder } from './Maze/mazeGenerator';
-import { useParams } from 'react-router-dom';
->>>>>>> a1fb3d1d8e43e3a5685e54e65fbe8aa019ce7636
+import { useParams } from "react-router-dom";
 
 let gameEnded = false;
 let winner;
@@ -73,7 +64,10 @@ function updateMapState(characterMapState: any, character: any, map: any) {
   const treasureNumber = 2;
   characterMapState.forEach((row: any, i: number) => {
     row.forEach((_: any, j: number) => {
-      if (characterMapState[i][j] === character.number && map[i][j] !== character.number) {
+      if (
+        characterMapState[i][j] === character.number &&
+        map[i][j] !== character.number
+      ) {
         if (characterNumbers.includes(initialMap[i][j])) {
           // characters fight
           const characterConfig = (charactersConfig as any)[character.name];
@@ -155,7 +149,7 @@ const Game = () => {
   useEffect(() => {
     const builder = new MazeBuilder(8, 8);
     const initialMap = builder.maze;
-    console.log('initialMap', initialMap);
+    console.log("initialMap", initialMap);
     setMap(initialMap as any);
     init({ map: initialMap });
     // setMap(getMapState(map || initialMap) as any);
