@@ -72,7 +72,7 @@ function updateMapState(
         const enemyCharacter = characters.find(
           (char: any) => char.number === initialMap[i][j]
         );
-        console.log(`${character.name} and ${(enemyCharacter as any).name} fight`)
+        console.log(`${character.name} and ${(enemyCharacter as any).name} fight [${i}][${j}]`)
         const enemyCharacterConfig = (charactersConfig as any)[
           (enemyCharacter as any).name
         ];
@@ -89,6 +89,7 @@ function updateMapState(
         }
       } else if (initialMap[i][j] === enemyNumber) {
         // character fight enemy
+        console.log(`${character.name} and enemy fight [${i}][${j}]`)
         const characterConfig = (charactersConfig as any)[character.name];
         const enemyConfig = (charactersConfig as any).enemy;
         const result = encounterResult(
@@ -114,9 +115,9 @@ function setGameState() {
   winner = characters.find((char) => char.status === 1);
   const charsLeft = characters.filter((char) => char.status !== -1);
   if (charsLeft.length === 1 && !winner) {
+    console.log(`one char left - ${char.name}`);
     winner = charsLeft[0];
   }
-  return winner;
 }
 
 function getMapState(map: any) {
@@ -135,7 +136,7 @@ function getMapState(map: any) {
 }
 
 const Game = () => {
-  const [map, setMap] = useState([]);
+  const [map, setMap] = useState(null);
   useEffect(() => {
     const builder = new MazeBuilder(8, 8);
     const initialMap = builder.maze;
@@ -143,9 +144,10 @@ const Game = () => {
     setMap(initialMap as any);
     init({ map: initialMap });
     const interval = setInterval(() => {
-      setMap(getMapState(initialMap) as any);
+      setMap(getMapState(map || initialMap) as any);
       setGameState();
       if (gameEnded) {
+        console.log(`game ended}`)
         clearInterval(interval)
       }
     }, 1000);
