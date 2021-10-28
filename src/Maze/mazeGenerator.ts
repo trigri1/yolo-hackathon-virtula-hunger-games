@@ -28,10 +28,23 @@ export class MazeBuilder {
     // place initial walls
     this.maze.forEach((row, r) => {
       row.forEach((_cell, c) => {
-        if((r % 2) == 1) {
-        } else if(c % 2 == 0) {
-          this.maze[r][c] = Cell.Rock;
-        }
+        switch(r)
+          {
+            case 0:
+            case this.rows - 1:
+              this.maze[r][c] = Cell.Rock;
+              break;
+  
+            default:
+              if((r % 2) == 1) {
+                if((c == 0) || (c == this.cols - 1)) {
+                  this.maze[r][c] = Cell.Rock;
+                }
+              } else if(c % 2 == 0) {
+                this.maze[r][c] = Cell.Rock;
+              }
+  
+          }
       });
     });
 
@@ -39,19 +52,15 @@ export class MazeBuilder {
     this.partition(1, this.height - 1, 1, this.width - 1);
     this.placeTreasure();
     this.placeEnemies();
-    this.placeCharacters();
+    this.placeCharacter(Cell.Character_1);
+    this.placeCharacter(Cell.Character_2);
+    this.placeCharacter(Cell.Character_3);
   }
 
-  placeCharacters() {
+  placeCharacter(ch: Cell) {
     let fr: number, fc: number;
     [fr, fc] = this.getFreeLocation();
-    this.maze[fr][fc] = Cell.Character_1;
-
-    [fr, fc] = this.getFreeLocation();
-    this.maze[fr][fc] = Cell.Character_2;
-
-    [fr, fc] = this.getFreeLocation();
-    this.maze[fr][fc] = Cell.Character_3;
+    this.maze[fr][fc] = ch;
   }
 
   placeEnemies() {

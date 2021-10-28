@@ -1,12 +1,11 @@
 import "./style.css";
-import ReactDOM from "react-dom";
 import React, { useEffect, useState } from "react";
 import Maze from "./Maze";
 import charactersConfig from "./character/config";
 import { getCharacterMapState, init } from "./character";
 import { MazeBuilder } from "./Maze/mazeGenerator";
 
-let gameEnded = 0;
+let gameEnded = false;
 let winner;
 
 let initialMap = [
@@ -46,23 +45,17 @@ function encounterResult(character: number, enemy: number) {
   return win;
 }
 
-function finishGame(winner: any, characters: any, setCharacters: any) {
+function finishGame(winner: any) {
   characters[winner.index].status = 1;
-  setCharacters(characters);
+  gameEnded = true;
 }
 
-function killCharacter(character: any, characters: any, setCharacters: any) {
+function killCharacter(character: any) {
+  console.log(`killing ${character.name}`);
   characters[character.index].status = -1;
-  setCharacters(characters);
 }
 
-function updateMapState(
-  characterMapState: any,
-  character: any,
-  map: any,
-  characters: any,
-  setCharacters: any
-) {
+function updateMapState(characterMapState: any, character: any, map: any) {
   const initialMap = map;
   const characterNumbers = characters.map(({ number }: any) => number);
   const enemyNumber = 3;
@@ -75,6 +68,9 @@ function updateMapState(
         const enemyCharacter = characters.find(
           (char: any) => char.number === initialMap[i][j]
         );
+        console.log(
+          `${character.name} and ${(enemyCharacter as any).name} fight`
+        );
         const enemyCharacterConfig = (charactersConfig as any)[
           (enemyCharacter as any).name
         ];
@@ -82,11 +78,12 @@ function updateMapState(
           characterConfig.power,
           enemyCharacterConfig.power
         );
+        console.log(`result ${result}`);
         if (result === 0) {
           initialMap[i][j] = character.number;
-          killCharacter(enemyCharacter, characters, setCharacters);
+          killCharacter(enemyCharacter);
         } else {
-          killCharacter(character, characters, setCharacters);
+          killCharacter(character);
         }
       } else if (initialMap[i][j] === enemyNumber) {
         // character fight enemy
@@ -99,20 +96,20 @@ function updateMapState(
         if (result === 0) {
           initialMap[i][j] = character.number;
         } else {
-          killCharacter(character, characters, setCharacters);
+          killCharacter(character);
         }
       } else if (initialMap[i][j] === treasureNumber) {
         // character wins
         initialMap[i][j] = character.number;
-        finishGame(character, characters, setCharacters);
+        finishGame(character);
       }
     });
   });
-  return map;
+  return initialMap;
 }
 
 function setGameState() {
-  let winner = characters.find((char) => char.status === 1);
+  winner = characters.find((char) => char.status === 1);
   const charsLeft = characters.filter((char) => char.status !== -1);
   if (charsLeft.length === 1 && !winner) {
     winner = charsLeft[0];
@@ -120,33 +117,39 @@ function setGameState() {
   return winner;
 }
 
-function getMapState(map: any, characters: any, setCharacters: any) {
+function getMapState(map: any) {
   let finalMap = map;
   characters.forEach((char: any) => {
-    let state = getCharacterMapState({ type: char.name, map });
-    finalMap = updateMapState(state, char, finalMap, characters, setCharacters);
+    console.log(char);
+    if (char.status === 0) {
+      let state = getCharacterMapState({ type: char.name, map });
+      console.log(`${char.name} state`, state);
+      finalMap = updateMapState(state, char, finalMap);
+      console.log(`map after update`, finalMap);
+    }
   });
+  console.log(`map after all characters`, finalMap);
   return finalMap;
 }
 
-const App = () => {
+const Game = () => {
   const [map, setMap] = useState([]);
-  const [characters, setCharacters] = useState([
-    // statuses: 0 - alive, 1 - won, -1 - dead
-    { number: 4, status: 0, name: "strong", index: 0 },
-    { number: 5, status: 0, name: "agile", index: 1 },
-    { number: 6, status: 0, name: "wise", index: 2 },
-  ]);
   useEffect(() => {
     const builder = new MazeBuilder(8, 8);
     const initialMap = builder.maze;
+    console.log("initialMap", initialMap);
+    setMap(initialMap as any);
     init({ map: initialMap });
     const interval = setInterval(() => {
-      setMap(getMapState(initialMap, characters, setCharacters) as any);
+      setMap(getMapState(initialMap) as any);
+      setGameState();
+      if (gameEnded) {
+        clearInterval(interval);
+      }
     }, 1000);
     return () => clearInterval(interval);
   }, []);
   return <div>{map ? <Maze map={map} /> : null}</div>;
 };
 
-ReactDOM.render(<App />, document.getElementById("app"));
+export default Game;
