@@ -131,6 +131,9 @@ function setGameState() {
     console.log(`one char left - ${charsLeft[0].name}`);
     winner = charsLeft[0];
   }
+  if (winner) {
+    finishGame(winner);
+  }
 }
 
 function getMapState(map: any) {
@@ -153,7 +156,7 @@ const Game = () => {
   const { character } = useParams<any>();
   console.log(character);
   useEffect(() => {
-    const builder = new MazeBuilder(4, 4);
+    const builder = new MazeBuilder(5, 5);
     const initialMap = builder.maze;
     console.log(`initialMap count ${counter}`, initialMap);
     setMap(initialMap as any);
@@ -163,10 +166,10 @@ const Game = () => {
       setMap(getMapState(map || initialMap) as any);
       setGameState();
       if (gameEnded) {
-        console.log(`game ended`);
+        console.log(`game ended winner ${winner.name}`);
         clearInterval(interval);
       }
-    }, 1000);
+    }, 500);
     return () => clearInterval(interval);
   }, []);
   return <div>{map ? <Maze map={map} /> : null}</div>;
