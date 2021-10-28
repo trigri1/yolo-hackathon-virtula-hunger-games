@@ -48,7 +48,7 @@ function getMapState() {
     // decide if game is ended or not, if someone died
     setGameState();
 
-    // update each characters map
+    // update each characters map 
   }
 }
 
