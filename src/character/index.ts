@@ -1,18 +1,22 @@
 import CHARACTER_CONFIG from "./config";
 import PF, { DiagonalMovement } from "pathfinding";
 import canCharacterMoveToPosition from "./CharacterBehaviour";
+import Cell from "../Maze/Cell";
 
 const characters = {
   strong: {
     position: [0, 0],
+    visitedCells: {},
     vision: null,
   },
   agile: {
     position: [0, 0],
+    visitedCells: {},
     vision: null,
   },
   wise: {
     position: [0, 0],
+    visitedCells: {},
     vision: null,
   },
 } as any;
@@ -50,10 +54,10 @@ const getCurrentVision = ({ map, char }) => {
       if (!newVision[yIndex]) {
         newVision[yIndex] = [];
       }
-      if (
+      const isNotVisible =
         Math.abs(position[0] - xIndex) > 1 ||
-        Math.abs(position[1] - yIndex) > 1
-      ) {
+        Math.abs(position[1] - yIndex) > 1;
+      if (isNotVisible) {
         newVision[yIndex][xIndex] = -1;
         return;
       }
@@ -93,21 +97,48 @@ type Args = {
   map: any;
 };
 
-const getPossibleCell = () => {};
+const getPossibleCells = ({ type }) => {
+  const { vision, visitedCells } = characters[type];
+  const cells = [];
+  vision.forEach((row: any, yIndex: number) => {
+    row.forEach((cell: number, xIndex: number) => {
+      if (cell === Cell.Obstacle) {
+        return;
+      }
+      const address = `${xIndex}-${yIndex}`;
+      if (visitedCells[address]) {
+        return;
+      }
+      cells.push({
+        position: [xIndex, yIndex],
+      });
+    });
+  });
+  return cells;
+};
 
 const getNextCell = ({ type, map }) => {
-  const cell = getPossibleCell();
+  const possibleCells = getPossibleCells({ type });
+  let i = 0;
+  let cell = possibleCells[i];
   while (!canCharacterMoveToPosition(type, cell, map)) {
-    return;
+    if (i >= possibleCells.length - 1) {
+      i = 0;
+    } else {
+      ++i;
+    }
+    cell = possibleCells[i];
   }
+  return cell;
 };
 
 export const getCharacterMapState = ({ type, map }: Args) => {
   const grid = new PF.Grid(map);
-  const playerConfig = CHARACTER_CONFIG[type];
+  const config = CHARACTER_CONFIG[type];
   // const { position, vision } = characters[type];
   const { vision } = characters[type];
-  // const cell = getNextCell();
+  // const nextCellPosition = getNextCell({ type, map });
+  // const nextCellToMove = getNextCellToMove({nextCell: nextCellPosition, });
   // const finder = new PF.AStarFinder({
   //   diagonalMovement: playerConfig.allowDiagonal
   //     ? DiagonalMovement.Always

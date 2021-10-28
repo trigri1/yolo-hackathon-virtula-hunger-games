@@ -56,7 +56,13 @@ function killCharacter(character: any, characters: any, setCharacters: any) {
   setCharacters(characters);
 }
 
-function updateMapState(characterMapState: any, character: any, map: any, characters: any, setCharacters: any) {
+function updateMapState(
+  characterMapState: any,
+  character: any,
+  map: any,
+  characters: any,
+  setCharacters: any
+) {
   const initialMap = map;
   const characterNumbers = characters.map(({ number }: any) => number);
   const enemyNumber = 3;
@@ -117,7 +123,7 @@ function setGameState() {
 function getMapState(map: any, characters: any, setCharacters: any) {
   let finalMap = map;
   characters.forEach((char: any) => {
-    let state = getCharacterMapState(char.name as any);
+    let state = getCharacterMapState({ type: char.name, map });
     finalMap = updateMapState(state, char, finalMap, characters, setCharacters);
   });
   return finalMap;
@@ -133,11 +139,13 @@ const App = () => {
   ]);
   useEffect(() => {
     const builder = new MazeBuilder(8, 8);
-    setMap(builder.maze as any);
-    init({ map: builder.maze });
+    const initialMap = builder.maze;
+    setMap(initialMap as any);
+    init({ map: initialMap });
     const interval = setInterval(() => {
-      setMap(getMapState(map, characters, setCharacters) as any);
+      setMap(getMapState(initialMap, characters, setCharacters) as any);
     }, 1000);
+    return () => clearInterval(interval);
   }, []);
   return <div>{map ? <Maze map={map} /> : null}</div>;
 };
