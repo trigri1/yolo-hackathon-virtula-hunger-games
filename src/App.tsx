@@ -8,7 +8,7 @@ export default function App() {
   return (
     <Router>
         <Switch>
-          <Route path="/game">
+          <Route path="/game/:character">
             <Game />
           </Route>
           <Route path="/">
