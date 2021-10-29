@@ -6,7 +6,6 @@ import "./styles.css";
 type Props = {
   wonCharacter: string;
   won: boolean;
-  betValue: number;
 };
 
 export const EndScreen = ({ wonCharacter, won }: Props) => {
