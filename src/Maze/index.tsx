@@ -57,9 +57,16 @@ function getCharClasses(step: number, charPositions: number[][][]) {
 
 }
 
+function getCharAnimations(positions: number[][], charIndex: number) {
+  return {
+    top: `${positions[charIndex][0] * 50}px`,
+    left: `${positions[charIndex][1] * 50}px`,
+    transition: { duration: 0.5 }
+  };
+}
+
 const Maze = ({ map }: { map: Cell[][] }) => {
   const [charsPositions, setCharPositions] = useState<number[][][]>([]);
-  const [currentStep, setCurrentStep] = useState(1);
   const [charClasses, setCharClasses] = useState(['', '', '']);
 
   const wiseControls = useAnimation();
@@ -69,28 +76,12 @@ const Maze = ({ map }: { map: Cell[][] }) => {
   useEffect(() => {
     if (charsPositions.length > 1) {
       const step = charsPositions.length - 1;
-      console.log(step, currentStep);
-      setTimeout(() => {
-        setCurrentStep(currentStep + 1);
-      }, 250);
       const positions = charsPositions[step];
       setCharClasses(getCharClasses(step, charsPositions));
 
-      wiseControls.start({
-        top: `${positions[0][0] * 50}px`,
-        left: `${positions[0][1] * 50}px`,
-        transition: { duration: 0.5 }
-      })
-      strongControls.start({
-        top: `${positions[1][0] * 50}px`,
-        left: `${positions[1][1] * 50}px`,
-        transition: { duration: 0.5 }
-      });
-      agileControls.start({
-        top: `${positions[2][0] * 50}px`,
-        left: `${positions[2][1] * 50}px`,
-        transition: { duration: 0.5 }
-      });
+      strongControls.start(getCharAnimations(positions, 0));
+      agileControls.start(getCharAnimations(positions, 1));
+      wiseControls.start(getCharAnimations(positions, 2));
     }
   }, [charsPositions]);
 
@@ -127,19 +118,19 @@ const Maze = ({ map }: { map: Cell[][] }) => {
           <>
             <motion.div className={classnames({
               cell: true,
-              wise: true,
-              [charClasses[0]]: true,
-            })} style={getStyle(charsPositions?.[0][0])} animate={wiseControls} />
-            <motion.div className={classnames({
-              cell: true,
               strong: true,
-              [charClasses[1]]: true,
-            })} style={getStyle(charsPositions?.[0][1])} animate={strongControls} />
+              [charClasses[0]]: true,
+            })} style={getStyle(charsPositions?.[0][0])} animate={strongControls} />
             <motion.div className={classnames({
               cell: true,
               agile: true,
+              [charClasses[1]]: true,
+            })} style={getStyle(charsPositions?.[0][1])} animate={agileControls} />
+            <motion.div className={classnames({
+              cell: true,
+              wise: true,
               [charClasses[2]]: true,
-            })} style={getStyle(charsPositions?.[0][2])} animate={agileControls} />
+            })} style={getStyle(charsPositions?.[0][2])} animate={wiseControls} />
           </>
         )
       }
