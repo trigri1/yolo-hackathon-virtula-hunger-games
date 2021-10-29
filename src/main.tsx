@@ -57,7 +57,8 @@ function updateMapState(characterMapState: any, character: any, map: any) {
     row.forEach((_: any, j: number) => {
       if (
         characterMapState[i][j] === character.number &&
-        map[i][j] !== character.number
+        map[i][j] !== character.number &&
+        character.status !== -1
       ) {
         console.log(`asd`);
         if (characterNumbers.includes(initialMap[i][j])) {

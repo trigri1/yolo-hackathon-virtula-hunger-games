@@ -8,14 +8,14 @@ const CHARACTER_CONFIG: { [key: string]: any } = {
   agile: {
     numberOnMap: 5,
     allowDiagonal: true,
-    power: 50,
-    avoidance: 50,
+    power: 20,
+    avoidance: 80,
   },
   wise: {
     numberOnMap: 6,
     allowDiagonal: false,
-    power: 30,
-    avoidance: 80,
+    power: 50,
+    avoidance: 50,
   },
   enemy: {
     numberOnMap: 3,
