@@ -115,6 +115,7 @@ function updateMapState(characterMapState: any, character: any, map: any) {
 }
 
 function setGameState() {
+  console.log('updating map')
   winner = characters.find((char) => char.status === 1);
   const charsLeft = characters.filter((char) => char.status !== -1);
   if (charsLeft.length === 1 && !winner) {
