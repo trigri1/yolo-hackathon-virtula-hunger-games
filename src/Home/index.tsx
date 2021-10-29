@@ -53,6 +53,9 @@ export default function Home() {
             <div className="description">
               Conflict: 100%
           </div>
+          <div className="description">
+            Movements: Forward, Backwards, Left, Right
+     </div>
           </div>
         </div>
         <div className="item">
@@ -73,6 +76,9 @@ export default function Home() {
             <div className="description">
               Conflict: 20%
        </div>
+       <div className="description">
+         Movements: Forward, Backwards, Left, Right, Diagonal
+  </div>
           </div>
         </div>
         <div className="item">
@@ -93,6 +99,9 @@ export default function Home() {
             <div className="description">
               Conflict: 50%
        </div>
+       <div className="description">
+         Movements: Forward, Backwards, Left, Right
+  </div>
           </div>
         </div>
       </div>
