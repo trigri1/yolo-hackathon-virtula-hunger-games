@@ -14,7 +14,7 @@ export const EndScreen = ({ wonCharacter, won }: Props) => {
   const betValue = +(router.query as any)?.bet || 3;
 
   const startAgain = () => {
-    router.push("/");
+    window.location.href = "/";
   };
   return (
     <div className="modal">
