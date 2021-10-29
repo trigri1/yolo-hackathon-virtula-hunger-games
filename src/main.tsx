@@ -31,22 +31,11 @@ const characters = [
 ];
 
 function encounterResult(character: number, enemy: number) {
-  let win;
   function won(power: any) {
-    const random = Math.random() * 100;
+    const random = Math.random() * (character + enemy);
     return random < power;
   }
-  for (let i = 0; i < 100; i++) {
-    const results = [won(character), won(enemy)];
-    if (results[0] && !results[1]) {
-      win = 0;
-      i = 101;
-    } else if (!results[0] && results[1]) {
-      win = 1;
-      i = 101;
-    }
-  }
-  return win;
+  return won(character) ? 0 : 1;
 }
 
 function finishGame(winner: any) {
