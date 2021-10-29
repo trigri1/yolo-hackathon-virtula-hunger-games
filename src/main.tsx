@@ -171,6 +171,7 @@ const Game = () => {
         <>
           {isEnded && (
             <EndScreen
+              betValue={3}
               wonCharacter={winner.name}
               won={parseInt(character) == winner.number}
             />
