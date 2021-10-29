@@ -9,7 +9,7 @@ import { EndScreen } from './End';
 
 let gameEnded = false;
 let winner: any;
-let selectedChar;
+let selectedChar: number;
 let counter = 1;
 
 let initialMap = [
@@ -23,7 +23,7 @@ let initialMap = [
   [0, 1, 0, 0, 0, 1, 0, 0],
 ];
 
-const characters = [
+let characters = [
   // statuses: 0 - alive, 1 - won, -1 - dead
   { number: 4, status: 0, name: 'strong', index: 0 },
   { number: 5, status: 0, name: 'agile', index: 1 },
@@ -46,6 +46,29 @@ function finishGame(winner: any) {
 function killCharacter(character: any) {
   console.log(`killing ${character.name}`);
   characters[character.index].status = -1;
+  if (character.number === selectedChar) {
+    selectedChar = NaN;
+  } 
+}
+
+function purifyCell(value: number) {
+  if (value.toString().length == 2) {
+    return value / 10
+  } else {
+    return value;
+  }
+}
+
+function enrichCell(value: number) {
+  if (value.toString().length == 1) {
+    return value * 10
+  } else {
+    return value;
+  }
+}
+
+function purifyMap(map: any) {
+  return map.map((row: any) => row.map((cell: any) => purifyCell(cell)))
 }
 
 function updateMapState(characterMapState: any, character: any, map: any) {
@@ -106,8 +129,10 @@ function updateMapState(characterMapState: any, character: any, map: any) {
         } else {
           initialMap[i][j] = characterMapState[i][j];
         }
-      } else if (characterMapState[i][j] !== -1) {
-        initialMap[i][j] = characterMapState[i][j];
+      } else if (characterMapState[i][j] !== -1 && !characterNumbers.includes(characterMapState[i][j])) {
+        initialMap[i][j] = character.number != selectedChar ? enrichCell(characterMapState[i][j]) : characterMapState[i][j];
+      } else if (characterMapState[i][j] == -1 && character.number == selectedChar) {
+        initialMap[i][j] = enrichCell(initialMap[i][j]);
       }
     });
   });
@@ -126,12 +151,28 @@ function setGameState() {
   }
 }
 
+function sortCharacters() {
+  console.log(`selectedChar ${selectedChar}`);
+  const sortedCharacters = characters.sort((a, b) => {
+    if (a.number == selectedChar) {
+      return 1;
+    }
+    if (b.number == selectedChar) {
+      return -1
+    }
+    return 0
+  });
+  sortedCharacters.forEach((char, index) => ({ ...char, index }));
+  console.log(`sortedCharacters`, sortedCharacters);
+  return sortedCharacters;
+}
+
 function getMapState(map: any) {
   let finalMap = map;
   characters.forEach((char: any) => {
     console.log(char);
     if (char.status === 0) {
-      let state = getCharacterMapState({ type: char.name, map });
+      let state = getCharacterMapState({ type: char.name, map: purifyMap(map) });
       console.log(`${char.name} state count ${counter}`, state);
       finalMap = updateMapState(state, char, finalMap);
       console.log(`map after update count ${counter}`, finalMap);
@@ -144,6 +185,8 @@ function getMapState(map: any) {
 const Game = () => {
   const [map, setMap] = useState(null);
   const { character } = useParams<any>();
+  selectedChar = character;
+  characters = sortCharacters();
   console.log('OUR CHARACTER', character);
   const [isEnded, setIsEnded] = useState(false);
   useEffect(() => {
@@ -161,7 +204,7 @@ const Game = () => {
         setIsEnded(true);
         clearInterval(interval);
       }
-    }, 500);
+    }, 1000);
     return () => clearInterval(interval);
   }, []);
 

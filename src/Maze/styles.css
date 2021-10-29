@@ -65,6 +65,10 @@ img {
   display: block;
 } */
 
+.fog {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 .strong {
     background-image: url("./images/strong.png");
 }
