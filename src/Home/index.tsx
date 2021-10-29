@@ -1,11 +1,22 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import Cell from "../Maze/Cell";
 import "../Maze/styles.css";
 import "./styles.css";
+import useRouter from "../utils/hooks/useRouter";
 
 export default function Home() {
   const [character, setCharacter] = useState<Cell>();
+  const [bet, setBet] = useState(0);
+  const router = useRouter();
+
+  const startGame = () => {
+    console.log("startGame", bet);
+    if (!bet) {
+      return;
+    }
+    router.push(`/game/${character}?bet=${bet}`);
+  };
 
   if (character) {
     const charClass = `character stand ${getCharacterClass(
@@ -21,12 +32,27 @@ export default function Home() {
           </div>
         </header>
         <div className="bet-input-container">
-          <input></input>
+          <input
+            onChange={(e: any) => {
+              setBet(e.target.value);
+            }}
+            onKeyPress={(e: any) => {
+              // e.preventDefaut();
+              if (e.key !== "Enter") {
+                return;
+              }
+              startGame();
+            }}
+            type="number"
+          ></input>
           <span> mBTC</span>
         </div>
-        <Link className="button" to={`game/${character}`}>
+        <button disabled={!bet} className="button" onClick={startGame}>
           Start
-        </Link>
+        </button>
+        {/* <Link className="button" to={`game/${character}`}>
+          Start
+        </Link> */}
       </div>
     );
   }
