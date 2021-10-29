@@ -99,10 +99,6 @@ export class MazeBuilder {
       treasureCoord[1],
       grid
     );
-    // HACK: path is empty array sometimes
-    if (path.length === 0) {
-      return true;
-    }
     return path.length >= this.minPathLengthToTreasure();
   };
 

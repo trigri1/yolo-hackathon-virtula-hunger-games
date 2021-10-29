@@ -9,9 +9,11 @@ type Props = {
   betValue: number;
 };
 
-export const EndScreen = ({ wonCharacter, won, betValue }: Props) => {
+export const EndScreen = ({ wonCharacter, won }: Props) => {
   const router = useRouter();
-  const startGame = () => {
+  const betValue = +(router.query as any)?.bet || 3;
+
+  const startAgain = () => {
     router.push("/");
   };
   return (
@@ -22,7 +24,7 @@ export const EndScreen = ({ wonCharacter, won, betValue }: Props) => {
       <div className="text result">
         {won ? `YOU WON ${betValue * 3} mBTC!!!` : "YOU LOST.. :("}
       </div>
-      <button className="button" onClick={startGame}>
+      <button className="button center" onClick={startAgain}>
         Play again
       </button>
     </div>
