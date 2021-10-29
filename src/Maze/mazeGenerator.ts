@@ -65,15 +65,17 @@ export class MazeBuilder {
 
     let ok = false;
 
+    let counter = 0;
     while (!ok) {
       [fr, fc] = this.getFreeLocation();
 
-      if (this.isPathToTreasureOk(fr, fc)) {
+      if (this.isPathToTreasureOk(fr, fc) || counter > 10) {
         this.maze[fr][fc] = ch;
         ok = true;
       } else {
         console.warn("path not ok");
       }
+      counter++;
     }
   }
 

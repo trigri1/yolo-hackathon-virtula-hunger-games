@@ -6,7 +6,7 @@ import useRouter from "../utils/hooks/useRouter";
 
 export default function Home() {
   const [character, setCharacter] = useState<Cell>();
-  const [bet, setBet] = useState(0);
+  const [bet, setBet] = useState(1);
   const router = useRouter();
 
   const startGame = () => {
@@ -42,6 +42,7 @@ export default function Home() {
               }
               startGame();
             }}
+            value={bet}
             type="number"
           ></input>
           <span> mBTC</span>
@@ -49,9 +50,6 @@ export default function Home() {
         <button disabled={!bet} className="button" onClick={startGame}>
           Start
         </button>
-        {/* <Link className="button" to={`game/${character}`}>
-          Start
-        </Link> */}
       </div>
     );
   }
