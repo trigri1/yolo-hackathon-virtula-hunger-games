@@ -34,6 +34,9 @@ function getStyle(coords: number[]): CSSProperties {
 }
 
 function getMoveClassname(prev: number[], next: number[]) {
+  if(next === outOfBoardCords){
+    return 'dead';
+  }
   let className = '';
   if (prev[0] < next[0]) {
     className = 'down';
@@ -57,10 +60,17 @@ function getCharClasses(step: number, charPositions: number[][][]) {
 
 }
 
-function getCharAnimations(positions: number[][], charIndex: number) {
+function getCharAnimations(charsPositions: number[][][], step: number, charIndex: number) {
+  const positions = charsPositions[step][charIndex];
+  if (positions === outOfBoardCords) {
+    return {
+      opacity: 0.7
+    }
+  }
+
   return {
-    top: `${positions[charIndex][0] * 50}px`,
-    left: `${positions[charIndex][1] * 50}px`,
+    top: `${positions[0] * 50}px`,
+    left: `${positions[1] * 50}px`,
     transition: { duration: 0.5 }
   };
 }
@@ -76,12 +86,11 @@ const Maze = ({ map }: { map: Cell[][] }) => {
   useEffect(() => {
     if (charsPositions.length > 1) {
       const step = charsPositions.length - 1;
-      const positions = charsPositions[step];
       setCharClasses(getCharClasses(step, charsPositions));
 
-      strongControls.start(getCharAnimations(positions, 0));
-      agileControls.start(getCharAnimations(positions, 1));
-      wiseControls.start(getCharAnimations(positions, 2));
+      strongControls.start(getCharAnimations(charsPositions, step, 0));
+      agileControls.start(getCharAnimations(charsPositions, step, 1));
+      wiseControls.start(getCharAnimations(charsPositions, step, 2));
     }
   }, [charsPositions]);
 
