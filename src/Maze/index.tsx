@@ -1,7 +1,7 @@
-import classnames from "classnames";
-import React, { CSSProperties, useEffect, useState } from "react";
-import { Cell } from "./mazeGenerator";
-import "./styles.css";
+import classnames from 'classnames';
+import React, { CSSProperties, useEffect, useState } from 'react';
+import { Cell } from './mazeGenerator';
+import './styles.css';
 
 const outOfBoardCords = [-1, -1];
 
@@ -40,7 +40,7 @@ const Maze = ({ map }: { map: Cell[][] }) => {
   ]);
 
   useEffect(() => {
-    console.log("updating coords", new Date());
+    console.log('updating coords', new Date());
     setCharPositions(useGetCharPositions(map));
   }, [map]);
 
@@ -67,9 +67,9 @@ const Maze = ({ map }: { map: Cell[][] }) => {
           );
         })}
       </div>
-      <div className="cell wise down" style={getStyle(charsPositions[0])} />
-      <div className="cell strong left" style={getStyle(charsPositions[1])} />
-      <div className="cell agile up" style={getStyle(charsPositions[2])} />
+      <div className="cell strong down" style={getStyle(charsPositions[0])} />
+      <div className="cell agile left" style={getStyle(charsPositions[1])} />
+      <div className="cell wise up" style={getStyle(charsPositions[2])} />
     </div>
   );
 };

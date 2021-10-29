@@ -6,42 +6,24 @@ import getRandomInRange from "../utils/getRandomInRange";
 
 const characters = {
   strong: {
+    currentTurn: 0,
     position: [0, 0],
     visitedCells: {},
     vision: null,
   },
   agile: {
+    currentTurn: 0,
     position: [0, 0],
     visitedCells: {},
     vision: null,
   },
   wise: {
+    currentTurn: 0,
     position: [0, 0],
     visitedCells: {},
     vision: null,
   },
 } as any;
-
-// let map = [
-//   [0, 0, 0, 1, 0, 0, 0, 0],
-//   [1, 4, 0, 0, 1, 0, 1, 0],
-//   [0, 0, 1, 0, 0, 1, 6, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 1, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 5, 0, 1, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 1, 0, 0, 0, 1, 0, 0],
-// ];
-// let vision = [
-//   [0, 0, 0, -1, -1, -1, -1, -1],
-//   [1, 4, 0, -1, -1, -1, -1, -1],
-//   [0, 0, 1, -1, -1, -1, -1, -1],
-//   [-1, -1, -1, -1, -1, -1, -1, -1],
-//   [0, 0, 1, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 5, 0, 1, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 1, 0, 0, 0, 1, 0, 0],
-// ];
 
 const getCurrentVision = ({ map, char }: any) => {
   const { position, vision } = char;
@@ -192,10 +174,15 @@ const getNextCellToMove = ({ nextCell, type, map }: any) => {
 };
 
 export const getCharacterMapState = ({ type, map }: Args) => {
-  const { numberOnMap } = CHARACTER_CONFIG[type];
-  // const { position, vision } = characters[type];
   const char = characters[type];
-  const { visitedCells, position } = char;
+  const { numberOnMap } = CHARACTER_CONFIG[type];
+  const { visitedCells, position, currentTurn } = char;
+  char.currentTurn++;
+
+  if (type === "strong" && currentTurn % 2 === 0) {
+    return char.vision;
+  }
+
   char.vision = getCurrentVision({ map, char });
   const nextCellPosition = getNextCell({ type, map });
   const nextCellToMove = getNextCellToMove({
@@ -208,17 +195,5 @@ export const getCharacterMapState = ({ type, map }: Args) => {
   char.vision[position[1]][position[0]] = 0;
   char.position = [x, y];
   visitedCells[`${x}-${y}`] = true;
-  // const finder = new PF.AStarFinder({
-  //   diagonalMovement: playerConfig.allowDiagonal
-  //     ? DiagonalMovement.Always
-  //     : DiagonalMovement.Never,
-  // });
-  console.log("getCharacterMapState", type, {
-    vision: char.vision,
-    position,
-    x,
-    y,
-    numberOnMap,
-  });
   return char.vision;
 };

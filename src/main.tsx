@@ -1,13 +1,14 @@
-import "./style.css";
-import React, { useEffect, useState } from "react";
-import Maze from "./Maze";
-import charactersConfig from "./character/config";
-import { getCharacterMapState, init } from "./character";
-import { MazeBuilder } from "./Maze/mazeGenerator";
-import { useParams } from "react-router-dom";
+import './style.css';
+import React, { useEffect, useState } from 'react';
+import Maze from './Maze';
+import charactersConfig from './character/config';
+import { getCharacterMapState, init } from './character';
+import { MazeBuilder } from './Maze/mazeGenerator';
+import { useParams } from 'react-router-dom';
+import { EndScreen } from './End';
 
 let gameEnded = false;
-let winner;
+let winner: any;
 let selectedChar;
 let counter = 1;
 
@@ -24,28 +25,17 @@ let initialMap = [
 
 const characters = [
   // statuses: 0 - alive, 1 - won, -1 - dead
-  { number: 4, status: 0, name: "strong", index: 0 },
-  { number: 5, status: 0, name: "agile", index: 1 },
-  { number: 6, status: 0, name: "wise", index: 2 },
+  { number: 4, status: 0, name: 'strong', index: 0 },
+  { number: 5, status: 0, name: 'agile', index: 1 },
+  { number: 6, status: 0, name: 'wise', index: 2 },
 ];
 
 function encounterResult(character: number, enemy: number) {
-  let win;
   function won(power: any) {
-    const random = Math.random() * 100;
+    const random = Math.random() * (character + enemy);
     return random < power;
   }
-  for (let i = 0; i < 100; i++) {
-    const results = [won(character), won(enemy)];
-    if (results[0] && !results[1]) {
-      win = 0;
-      i = 101;
-    } else if (!results[0] && results[1]) {
-      win = 1;
-      i = 101;
-    }
-  }
-  return win;
+  return won(character) ? 0 : 1;
 }
 
 function finishGame(winner: any) {
@@ -154,9 +144,10 @@ function getMapState(map: any) {
 const Game = () => {
   const [map, setMap] = useState(null);
   const { character } = useParams<any>();
-  console.log(character);
+  console.log('OUR CHARACTER', character);
+  const [isEnded, setIsEnded] = useState(false);
   useEffect(() => {
-    const builder = new MazeBuilder(8, 8);
+    const builder = new MazeBuilder(5, 5);
     const initialMap = builder.maze;
     console.log(`initialMap count ${counter}`, initialMap);
     setMap(initialMap as any);
@@ -166,13 +157,29 @@ const Game = () => {
       setMap(getMapState(map || initialMap) as any);
       setGameState();
       if (gameEnded) {
-        console.log(`game ended winner ${winner.name}`);
+        console.log(`game ended winner ${winner.name} number${winner.number}`);
+        setIsEnded(true);
         clearInterval(interval);
       }
     }, 500);
     return () => clearInterval(interval);
   }, []);
-  return <div>{map ? <Maze map={map} /> : null}</div>;
+
+  return (
+    <div>
+      {map ? (
+        <>
+          {isEnded && (
+            <EndScreen
+              wonCharacter={winner.name}
+              won={parseInt(character) == winner.number}
+            />
+          )}
+          <Maze map={map} />
+        </>
+      ) : null}
+    </div>
+  );
 };
 
 export default Game;
