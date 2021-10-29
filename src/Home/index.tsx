@@ -6,7 +6,7 @@ import useRouter from "../utils/hooks/useRouter";
 
 export default function Home() {
   const [character, setCharacter] = useState<Cell>();
-  const [bet, setBet] = useState(1);
+  const [bet, setBet] = useState<number>(1);
   const router = useRouter();
 
   const startGame = () => {
@@ -33,23 +33,33 @@ export default function Home() {
         <div className="bet-input-container">
           <input
             onChange={(e: any) => {
-              setBet(e.target.value);
+              const re = /^[0-9\b]+$/;
+              if (e.target.value === "" || re.test(e.target.value)) {
+                setBet(e.target.value);
+              }
             }}
             onKeyPress={(e: any) => {
-              // e.preventDefaut();
               if (e.key !== "Enter") {
                 return;
               }
               startGame();
             }}
             value={bet}
-            type="number"
           ></input>
           <span> mBTC</span>
         </div>
-        <button disabled={!bet} className="button" onClick={startGame}>
-          Start
-        </button>
+        <div style={{ textAlign: "center" }}>
+          <button disabled={!bet} className="button" onClick={startGame}>
+            Start
+          </button>
+        </div>
+        <div
+          style={{ marginTop: "10px", fontSize: "24px", textAlign: "center" }}
+        >
+          You will win: {bet ? bet * 3 : 0} mBTC
+          <br />
+          (if you are lucky enough)
+        </div>
       </div>
     );
   }
