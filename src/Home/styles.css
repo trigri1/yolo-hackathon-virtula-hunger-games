@@ -3,6 +3,7 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 body {
   color: bisque;
   font-family: fantasy;
@@ -36,10 +37,8 @@ a {
   cursor: pointer;
   position: relative;
   background-size: contain;
-
   background-position-y: -255px;
   background-position-x: -305px;
-
   position: absolute;
   background-position-x: 0;
   background-position-y: 0;
@@ -63,7 +62,7 @@ a {
 .description {
   border-radius: 2%;
   position: relative;
-  top: 80px;
+  top: 30px;
   border-width: 1px;
   border-style: solid;
   padding: 10px;
@@ -89,4 +88,14 @@ a {
   line-height: 1.25rem;
   height: 2.5rem;
   padding: 0px 1.25rem;
+}
+
+.title {
+  position: relative;
+  top: 40px;
+  padding: 10px;
+  left: -10px;
+  font-size: 20px;
+  width: 200px;
+  font-weight: 900;
 }
