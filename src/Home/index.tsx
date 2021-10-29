@@ -33,12 +33,12 @@ export default function Home() {
   return (
     <div>
       <header>
-        <h1>Choose you character</h1>
+        <h1>Choose your character</h1>
       </header>
       <div className="character-container">
         <div className="item">
           <div
-            className="character agile stand"
+            className="character strong stand"
             onClick={() => setCharacter(Cell.Character1)}
           >
             <div className="description">
@@ -57,7 +57,7 @@ export default function Home() {
         </div>
         <div className="item">
           <div
-            className="character wise stand"
+            className="character agile stand"
             onClick={() => setCharacter(Cell.Character2)}
           >
             <div className="description">
@@ -67,7 +67,7 @@ export default function Home() {
         </div>
         <div className="item">
           <div
-            className="character strong stand"
+            className="character wise stand"
             onClick={() => setCharacter(Cell.Character3)}
           >
             <div className="description">
@@ -84,11 +84,11 @@ const getCharacterClass = (value: Cell) => {
   console.log(value);
   switch (value) {
     case Cell.Character1:
-      return "agile";
-    case Cell.Character2:
-      return "wise";
-    case Cell.Character3:
       return "strong";
+    case Cell.Character2:
+      return "agile";
+    case Cell.Character3:
+      return "wise";
     default:
       return null;
   }
