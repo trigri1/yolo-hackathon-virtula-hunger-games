@@ -64,8 +64,8 @@ export default function Home() {
               Hu-man
         </div>
             <div className="description">
-              Hu-man is an average, normal person who always had a difficulties in making real connection with others.
-              He thinks, Treasure can help him find sincere friends.
+              Hu-man -the Genial- always try to avoid conflicts. Some invaders destroyed his village, now,
+             his clan needs help to rebuild it thats why Hu-man is after the Treasure.
             </div>
             <div className="description">
               Power: 20%
@@ -84,8 +84,8 @@ export default function Home() {
               Jani
   </div>
             <div className="description">
-              ani - the Genial - is big, friendly and sweet viking. He always try to avoid conflict. Some invaders destroyed his village and
-             his clan needs help to rebuild it thats why Jani is after the Treasure.
+              Jani is big in size, average, normal human being who always had difficulties in making real connection with others.
+              He thinks, Treasure can help him find sincere friends.
             </div>
             <div className="description">
               Power: 50%
