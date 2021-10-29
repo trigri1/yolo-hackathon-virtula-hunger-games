@@ -1,11 +1,11 @@
-import './style.css';
-import React, { useEffect, useState } from 'react';
-import Maze from './Maze';
-import charactersConfig from './character/config';
-import { getCharacterMapState, init } from './character';
-import { MazeBuilder } from './Maze/mazeGenerator';
-import { useParams } from 'react-router-dom';
-import { EndScreen } from './End';
+import "./style.css";
+import React, { useEffect, useState } from "react";
+import Maze from "./Maze";
+import charactersConfig from "./character/config";
+import { getCharacterMapState, init } from "./character";
+import { MazeBuilder } from "./Maze/mazeGenerator";
+import { useParams } from "react-router-dom";
+import { EndScreen } from "./End";
 
 let gameEnded = false;
 let winner: any;
@@ -25,9 +25,9 @@ let initialMap = [
 
 const characters = [
   // statuses: 0 - alive, 1 - won, -1 - dead
-  { number: 4, status: 0, name: 'strong', index: 0 },
-  { number: 5, status: 0, name: 'agile', index: 1 },
-  { number: 6, status: 0, name: 'wise', index: 2 },
+  { number: 4, status: 0, name: "strong", index: 0 },
+  { number: 5, status: 0, name: "agile", index: 1 },
+  { number: 6, status: 0, name: "wise", index: 2 },
 ];
 
 function encounterResult(character: number, enemy: number) {
@@ -116,7 +116,7 @@ function updateMapState(characterMapState: any, character: any, map: any) {
 }
 
 function setGameState() {
-  console.log('updating map')
+  console.log("updating map");
   winner = characters.find((char) => char.status === 1);
   const charsLeft = characters.filter((char) => char.status !== -1);
   if (charsLeft.length === 1 && !winner) {
@@ -146,7 +146,7 @@ function getMapState(map: any) {
 const Game = () => {
   const [map, setMap] = useState(null);
   const { character } = useParams<any>();
-  console.log('OUR CHARACTER', character);
+  console.log("OUR CHARACTER", character);
   const [isEnded, setIsEnded] = useState(false);
   useEffect(() => {
     const builder = new MazeBuilder(5, 5);
@@ -173,7 +173,6 @@ const Game = () => {
         <>
           {isEnded && (
             <EndScreen
-              betValue={3}
               wonCharacter={winner.name}
               won={parseInt(character) == winner.number}
             />
