@@ -1,3 +1,5 @@
+import PF, { DiagonalMovement } from "pathfinding";
+
 export enum Cell {
   Empty,
   Rock,
@@ -54,10 +56,65 @@ export class MazeBuilder {
     this.placeCharacter(Cell.Character_3);
   }
 
+  minPathLengthToTreasure() {
+    return this.width;
+  }
+
   placeCharacter(ch: Cell) {
     let fr: number, fc: number;
-    [fr, fc] = this.getFreeLocation();
-    this.maze[fr][fc] = ch;
+
+    let ok = false;
+
+    while (!ok) {
+      [fr, fc] = this.getFreeLocation();
+
+      if (this.isPathToTreasureOk(fr, fc)) {
+        this.maze[fr][fc] = ch;
+        ok = true;
+      } else {
+        console.warn("path not ok");
+      }
+    }
+  }
+
+  isPathToTreasureOk = (startX: number, startY: number) => {
+    const mapForPathFinding = this.maze.reduce((acc: any, current: any) => {
+      acc.push(
+        current.map((cell: number) => {
+          return cell !== Cell.Rock ? 0 : 1;
+        })
+      );
+      return acc;
+    }, []);
+
+    const grid = new PF.Grid(mapForPathFinding);
+    const finder = new PF.AStarFinder({
+      diagonalMovement: DiagonalMovement.Always,
+    });
+    const treasureCoord = this.getCoordinateOfCell(Cell.Treasure);
+    const path = finder.findPath(
+      startX,
+      startY,
+      treasureCoord[0],
+      treasureCoord[1],
+      grid
+    );
+    // HACK: path is empty array sometimes
+    if (path.length === 0) {
+      return true;
+    }
+    return path.length >= this.minPathLengthToTreasure();
+  };
+
+  getCoordinateOfCell(cell: Cell): [number, number] {
+    for (let i = 0; i < this.rows; i++) {
+      for (let j = 0; j < this.cols; j++) {
+        if (this.maze[i][j] === cell) {
+          return [i, j];
+        }
+      }
+    }
+    return [-1, -1];
   }
 
   placeEnemies() {
@@ -81,8 +138,8 @@ export class MazeBuilder {
       fc = 0;
 
     while (!ok) {
-      fr = this.rand(1, this.cols - 1);
-      fc = this.rand(1, this.rows - 1);
+      fr = this.rand(1, this.rows - 1);
+      fc = this.rand(1, this.cols - 1);
 
       if (this.maze[fr][fc] === Cell.Empty) {
         ok = true;
