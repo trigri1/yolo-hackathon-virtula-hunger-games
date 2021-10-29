@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Cell from "../Maze/Cell";
+import Cell from "../Maze/cell";
 import "../Maze/styles.css";
 import "./styles.css";
 
