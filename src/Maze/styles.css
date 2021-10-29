@@ -1,213 +1,158 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing:border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
+
 body {
-    width: 100%;
-    height: 100vh;
-    background-color:#000;
+  width: 100%;
+  height: 100vh;
+  background-color: #000;
 
-    display:grid;
-    place-items:center;
+  display: grid;
+  place-items: center;
 }
-img {
-    width: 30%;
-    /* width: 15vw; */
-    height: 100%;
-    object-fit:cover;
-
-    -webkit-box-reflect:below 2px linear-gradient(transparent, transparent, #0004);
-
-    transform-origin:center;
-    transform:perspective(800px) rotateY(25deg);
-    transition:0.5s;
-}
-
-.container {
-    max-width:600px;
-    max-height:350px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    /* gap: 10vw; */
-    gap:200px;
-
-}
-/* .container:hover img {
-  opacity:0.3;
-}
-.container img:hover {
-  transform:perspective(800px)       rotateY(0deg);
-  opacity:1;
-} */
-
-/* .character {
-    display: contents;
-} */
-
-/* a.item {
-  vertical-align: top;
-  display: inline-block;
-  text-align: center;
-  width: 120px;
-} */
-.caption {
-    display: none;
-    /* -webkit-box-reflect:below 2px linear-gradient(transparent, transparent, #0004);
-
-    transform-origin:center;
-    transform:perspective(800px) rotateY(25deg);
-    transition:0.5s; */
-}
-
-/* .container:hover {
-  display: block;
-} */
 
 .strong {
-    background-image: url("./images/strong.png");
-}
-
-h1 {
-    color: bisque;
-    text-align: center;
-    font-family: fantasy;
-    margin-bottom: 20px;
+  background-image: url("./images/strong.png");
 }
 
 .wrapper {
-    position: relative;
-    overflow: hidden;
-    display: grid;
-    font-size: 50px;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  font-size: 50px;
 }
 
 .map {
-    grid-template-rows: repeat(10, 50px);
-    gap: 0 0;
-    width: fit-content;
-    background-image: url(/src/Maze/images/tiles.png);
-    background-size: 1540px;
-    background-repeat: no-repeat;
-    background-position-y: -924px;
-    background-position-x: 0;
+  grid-template-rows: repeat(10, 50px);
+  gap: 0 0;
+  width: fit-content;
+  background-image: url(/src/Maze/images/tiles.png);
+  background-size: 1540px;
+  background-repeat: no-repeat;
+  background-position-y: -924px;
+  background-position-x: 0;
 }
 
 .row {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .cell {
-    height: 50px;
-    width: 50px;
-    display: grid;
-    cursor: pointer;
-    position: relative;
-    background-image: url(/src/Maze/images/tiles.png);
-    background-size: 1540px;
-    background-repeat: no-repeat;
-    background-position-y: -924px;
-    background-position-x: 0;
+  height: 50px;
+  width: 50px;
+  display: grid;
+  cursor: pointer;
+  position: relative;
+  background-image: url(/src/Maze/images/tiles.png);
+  background-size: 1540px;
+  background-repeat: no-repeat;
+  background-position-y: -924px;
+  background-position-x: 0;
 }
 
 .cell:after {
-    position: absolute;
-    left: 1px;
-    top: -5px;
-    text-align: center;
-    text-shadow: 0 0 1px black;
-    font-size: 1em;
+  position: absolute;
+  left: 1px;
+  top: -5px;
+  text-align: center;
+  text-shadow: 0 0 1px black;
+  font-size: 1em;
 }
 
 .wall {
-    background-position-y: -360px;
-    background-position-x: 0;
+  background-position-y: -360px;
+  background-position-x: 0;
 }
 
 .treasure:after {
-    content: '💎';
+  content: "💎";
 }
 
 @keyframes move-horizontal {
-    to {
-        background-position-x: -560px;
-    }
+  to {
+    background-position-x: -560px;
+  }
 }
 
 @keyframes move-vertical {
-    to {
-        background-position-x: -455px;
-    }
+  to {
+    background-position-x: -455px;
+  }
 }
 
 @keyframes move-down {
-    to {
-        background-position-x: -558px;
-    }
+  to {
+    background-position-x: -558px;
+  }
 }
 
-.wise, .agile, .strong {
-    position: absolute;
-    background-position-x: 0;
-    background-position-y: 0;
-    background-size: 650px;
-    background-repeat: no-repeat;
+.wise,
+.agile,
+.strong {
+  position: absolute;
+  background-position-x: 0;
+  background-position-y: 0;
+  background-size: 650px;
+  background-repeat: no-repeat;
 }
 
 .right {
-    background-position-y: -456px;
-    animation: move-horizontal 0.5s steps(11) infinite;
+  background-position-y: -456px;
+  animation: move-horizontal 0.5s steps(11) infinite;
 }
 
 .left {
-    transform: scaleX(-1);
-    background-position-y: -456px;
-    animation: move-horizontal 0.5s steps(11) infinite;
+  transform: scaleX(-1);
+  background-position-y: -456px;
+  animation: move-horizontal 0.5s steps(11) infinite;
 }
 
 .up {
-    background-position-y: -352px;
-    animation: move-vertical 0.5s steps(9) infinite;
+  background-position-y: -352px;
+  animation: move-vertical 0.5s steps(9) infinite;
 }
 
 .down {
-    background-position-y: -255px;
-    background-position-x: -305px;
-    animation: move-down 0.5s steps(5) infinite;
+  background-position-y: -255px;
+  background-position-x: -305px;
+  animation: move-down 0.5s steps(5) infinite;
 }
 
 .wise {
-    background-image: url("./images/wise.png");
+  background-image: url("./images/wise.png");
 }
 
 .agile {
-    background-image: url("./images/agile.png");
+  background-image: url("./images/agile.png");
 }
 
 .strong {
-    background-image: url("./images/strong.png");
+  background-image: url("./images/strong.png");
 }
 
 @keyframes play {
-    0%, 100% {
-        background-position-x: 0;
-    }
-    50% {
-        background-position-x: -208px;
-    }
+  0%,
+  100% {
+    background-position-x: 0;
+  }
+  50% {
+    background-position-x: -208px;
+  }
 }
 
 .enemy:after {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    content: ' ';
-    background-image: url(/src/Maze/images/yeti.png);
-    animation: play 1.8s steps(4) infinite;
-    background-size: 333px 260px;
-    background-repeat: no-repeat;
-    background-position-y: -101px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  content: " ";
+  background-image: url(/src/Maze/images/yeti.png);
+  animation: play 1.8s steps(4) infinite;
+  background-size: 333px 260px;
+  background-repeat: no-repeat;
+  background-position-y: -101px;
+  transform: scale(0.85);
 }

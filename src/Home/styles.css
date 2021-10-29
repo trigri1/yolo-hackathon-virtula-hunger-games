@@ -9,11 +9,20 @@ body {
   font-family: fantasy;
 }
 
+header {
+  margin-bottom: 20px;
+}
+
+.header-row {
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+}
+
 h1 {
   color: bisque;
   text-align: center;
   font-family: fantasy;
-  margin-bottom: 20px;
 }
 
 a {
@@ -21,13 +30,27 @@ a {
   font-family: fantasy;
 }
 
-.container {
+input {
+  color: bisque;
+  line-height: 2;
+  width: 80%;
+  font-family: fantasy;
+  font-size: 20px;
+  background-color: black;
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-left-style: hidden;
+  border-bottom-style: groove;
+  outline: none;
+}
+
+.character-container {
   max-width: 600px;
   max-height: 350px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 200px;
+  gap: 150px;
 }
 
 .character {
@@ -35,7 +58,6 @@ a {
   width: 50px;
   display: grid;
   cursor: pointer;
-  position: relative;
   background-size: contain;
   background-position-y: -255px;
   background-position-x: -305px;
@@ -44,9 +66,14 @@ a {
   background-position-y: 0;
   background-size: 650px;
   background-repeat: no-repeat;
+  position: static;
 }
 
 .character:hover {
+  animation: move-down 0.5s steps(5) infinite;
+}
+
+.character-moving {
   animation: move-down 0.5s steps(5) infinite;
 }
 
@@ -84,7 +111,6 @@ a {
   white-space: nowrap;
   color: rgb(255, 255, 255);
   background-color: rgb(255, 79, 15);
-  font-size: 0.875rem;
   line-height: 1.25rem;
   height: 2.5rem;
   padding: 0px 1.25rem;
@@ -98,4 +124,13 @@ a {
   font-size: 20px;
   width: 200px;
   font-weight: 900;
+}
+.center {
+  width: 50%;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.bet-input-container {
+  margin-bottom: 20px;
 }

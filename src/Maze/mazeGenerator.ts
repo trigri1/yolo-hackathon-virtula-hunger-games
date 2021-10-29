@@ -16,7 +16,6 @@ export class MazeBuilder {
   public readonly maze: Cell[][];
 
   constructor(width = 10, height = 10) {
-
     this.width = width;
     this.height = height;
 
@@ -28,23 +27,21 @@ export class MazeBuilder {
     // place initial walls
     this.maze.forEach((row, r) => {
       row.forEach((_cell, c) => {
-        switch(r)
-          {
-            case 0:
-            case this.rows - 1:
-              this.maze[r][c] = Cell.Rock;
-              break;
-  
-            default:
-              if((r % 2) == 1) {
-                if((c == 0) || (c == this.cols - 1)) {
-                  this.maze[r][c] = Cell.Rock;
-                }
-              } else if(c % 2 == 0) {
+        switch (r) {
+          case 0:
+          case this.rows - 1:
+            this.maze[r][c] = Cell.Rock;
+            break;
+
+          default:
+            if (r % 2 == 1) {
+              if (c == 0 || c == this.cols - 1) {
                 this.maze[r][c] = Cell.Rock;
               }
-  
-          }
+            } else if (c % 2 == 0) {
+              this.maze[r][c] = Cell.Rock;
+            }
+        }
       });
     });
 
@@ -73,7 +70,6 @@ export class MazeBuilder {
   }
 
   placeTreasure() {
-  
     let fr: number, fc: number;
     [fr, fc] = this.getFreeLocation();
     this.maze[fr][fc] = Cell.Treasure;
@@ -81,13 +77,14 @@ export class MazeBuilder {
 
   getFreeLocation(): [number, number] {
     let ok = false;
-    let fr=0, fc=0;
+    let fr = 0,
+      fc = 0;
 
-    while(!ok) {
-      fr = this.rand(1, this.cols - 1)
-      fc = this.rand(1, this.rows - 1)
+    while (!ok) {
+      fr = this.rand(1, this.cols - 1);
+      fc = this.rand(1, this.rows - 1);
 
-      if(this.maze[fr][fc] === Cell.Empty) {
+      if (this.maze[fr][fc] === Cell.Empty) {
         ok = true;
       }
     }
@@ -95,7 +92,9 @@ export class MazeBuilder {
   }
 
   initArray(value: Cell): Cell[][] {
-    return new Array(this.rows).fill([]).map(() => new Array(this.cols).fill(value));
+    return new Array(this.rows)
+      .fill([])
+      .map(() => new Array(this.cols).fill(value));
   }
 
   rand(min: number, max: number) {
@@ -111,7 +110,7 @@ export class MazeBuilder {
   }
 
   inBounds(r: number, c: number) {
-    return !((this.maze[r] === undefined) || (this.maze[r][c] === undefined));
+    return !(this.maze[r] === undefined || this.maze[r][c] === undefined);
   }
 
   shuffle(array: boolean[]) {
@@ -129,7 +128,7 @@ export class MazeBuilder {
 
     let horiz, vert, x, y, start, end;
 
-    if ((r2 < r1) || (c2 < c1)) {
+    if (r2 < r1 || c2 < c1) {
       return;
     }
 
@@ -139,7 +138,7 @@ export class MazeBuilder {
       x = r1 + 1;
       y = r2 - 1;
       start = Math.round(x + (y - x) / 4);
-      end = Math.round(x + 3 * (y - x) / 4);
+      end = Math.round(x + (3 * (y - x)) / 4);
       horiz = this.rand(start, end);
     }
 
@@ -149,13 +148,13 @@ export class MazeBuilder {
       x = c1 + 1;
       y = c2 - 1;
       start = Math.round(x + (y - x) / 3);
-      end = Math.round(x + 2 * (y - x) / 3);
+      end = Math.round(x + (2 * (y - x)) / 3);
       vert = this.rand(start, end);
     }
 
     for (let i = this.posToWall(r1) - 1; i <= this.posToWall(r2) + 1; i++) {
       for (let j = this.posToWall(c1) - 1; j <= this.posToWall(c2) + 1; j++) {
-        if ((i == this.posToWall(horiz)) || (j == this.posToWall(vert))) {
+        if (i == this.posToWall(horiz) || j == this.posToWall(vert)) {
           this.maze[i][j] = Cell.Rock;
         }
       }
@@ -167,22 +166,26 @@ export class MazeBuilder {
 
     if (gaps[0]) {
       let gapPosition = this.rand(c1, vert);
-      this.maze[this.posToWall(horiz)][this.posToSpace(gapPosition)] = Cell.Empty;
+      this.maze[this.posToWall(horiz)][this.posToSpace(gapPosition)] =
+        Cell.Empty;
     }
 
     if (gaps[1]) {
       let gapPosition = this.rand(vert + 1, c2 + 1);
-      this.maze[this.posToWall(horiz)][this.posToSpace(gapPosition)] = Cell.Empty;
+      this.maze[this.posToWall(horiz)][this.posToSpace(gapPosition)] =
+        Cell.Empty;
     }
 
     if (gaps[2]) {
       let gapPosition = this.rand(r1, horiz);
-      this.maze[this.posToSpace(gapPosition)][this.posToWall(vert)] = Cell.Empty;
+      this.maze[this.posToSpace(gapPosition)][this.posToWall(vert)] =
+        Cell.Empty;
     }
 
     if (gaps[3]) {
       let gapPosition = this.rand(horiz + 1, r2 + 1);
-      this.maze[this.posToSpace(gapPosition)][this.posToWall(vert)] = Cell.Empty;
+      this.maze[this.posToSpace(gapPosition)][this.posToWall(vert)] =
+        Cell.Empty;
     }
 
     // recursively partition newly created chambers
@@ -191,6 +194,5 @@ export class MazeBuilder {
     this.partition(horiz + 1, r2, c1, vert - 1);
     this.partition(r1, horiz - 1, vert + 1, c2);
     this.partition(horiz + 1, r2, vert + 1, c2);
-
   }
 }
