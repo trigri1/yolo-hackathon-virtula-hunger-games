@@ -1,4 +1,5 @@
 import classnames from 'classnames';
+import { useAnimation, motion } from 'framer-motion';
 import React, { CSSProperties, useEffect, useState } from 'react';
 import { Cell } from './mazeGenerator';
 import './styles.css';
@@ -32,16 +33,70 @@ function getStyle(coords: number[]): CSSProperties {
   };
 }
 
+function getMoveClassname(prev: number[], next: number[]) {
+  if(next === outOfBoardCords){
+    return 'dead';
+  }
+  let className = '';
+  if (prev[0] < next[0]) {
+    className = 'down';
+  }
+  if (prev[0] > next[0]) {
+    className = 'up';
+  }
+  if (prev[1] > next[1]) {
+    className = 'left';
+  }
+  if (prev[1] < next[1]) {
+    className = 'right';
+  }
+  return className;
+}
+
+function getCharClasses(step: number, charPositions: number[][][]) {
+  const prev = charPositions[step - 1];
+  const next = charPositions[step];
+  return [getMoveClassname(prev[0], next[0]), getMoveClassname(prev[1], next[1]), getMoveClassname(prev[2], next[2])]
+
+}
+
+function getCharAnimations(charsPositions: number[][][], step: number, charIndex: number) {
+  const positions = charsPositions[step][charIndex];
+  if (positions === outOfBoardCords) {
+    return {
+      opacity: 0.7
+    }
+  }
+
+  return {
+    top: `${positions[0] * 50}px`,
+    left: `${positions[1] * 50}px`,
+    transition: { duration: 0.5 }
+  };
+}
+
 const Maze = ({ map }: { map: Cell[][] }) => {
-  const [charsPositions, setCharPositions] = useState([
-    outOfBoardCords,
-    outOfBoardCords,
-    outOfBoardCords,
-  ]);
+  const [charsPositions, setCharPositions] = useState<number[][][]>([]);
+  const [charClasses, setCharClasses] = useState(['', '', '']);
+
+  const wiseControls = useAnimation();
+  const strongControls = useAnimation();
+  const agileControls = useAnimation();
+
+  useEffect(() => {
+    if (charsPositions.length > 1) {
+      const step = charsPositions.length - 1;
+      setCharClasses(getCharClasses(step, charsPositions));
+
+      strongControls.start(getCharAnimations(charsPositions, step, 0));
+      agileControls.start(getCharAnimations(charsPositions, step, 1));
+      wiseControls.start(getCharAnimations(charsPositions, step, 2));
+    }
+  }, [charsPositions]);
 
   useEffect(() => {
     console.log('updating coords', new Date());
-    setCharPositions(useGetCharPositions(map));
+    setCharPositions([...charsPositions, useGetCharPositions(map)]);
   }, [map]);
 
   return (
@@ -60,16 +115,34 @@ const Maze = ({ map }: { map: Cell[][] }) => {
                       enemy: column === Cell.Enemy,
                     })}
                     key={`cell-${columnIndex}`}
-                  ></div>
+                  />
                 );
               })}
             </div>
           );
         })}
       </div>
-      <div className="cell strong down" style={getStyle(charsPositions[0])} />
-      <div className="cell agile left" style={getStyle(charsPositions[1])} />
-      <div className="cell wise up" style={getStyle(charsPositions[2])} />
+      {
+        charsPositions.length && (
+          <>
+            <motion.div className={classnames({
+              cell: true,
+              strong: true,
+              [charClasses[0]]: true,
+            })} style={getStyle(charsPositions?.[0][0])} animate={strongControls} />
+            <motion.div className={classnames({
+              cell: true,
+              agile: true,
+              [charClasses[1]]: true,
+            })} style={getStyle(charsPositions?.[0][1])} animate={agileControls} />
+            <motion.div className={classnames({
+              cell: true,
+              wise: true,
+              [charClasses[2]]: true,
+            })} style={getStyle(charsPositions?.[0][2])} animate={wiseControls} />
+          </>
+        )
+      }
     </div>
   );
 };

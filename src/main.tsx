@@ -57,7 +57,8 @@ function updateMapState(characterMapState: any, character: any, map: any) {
     row.forEach((_: any, j: number) => {
       if (
         characterMapState[i][j] === character.number &&
-        map[i][j] !== character.number
+        map[i][j] !== character.number &&
+        character.status !== -1
       ) {
         console.log(`asd`);
         if (characterNumbers.includes(initialMap[i][j])) {
@@ -115,6 +116,7 @@ function updateMapState(characterMapState: any, character: any, map: any) {
 }
 
 function setGameState() {
+  console.log('updating map')
   winner = characters.find((char) => char.status === 1);
   const charsLeft = characters.filter((char) => char.status !== -1);
   if (charsLeft.length === 1 && !winner) {

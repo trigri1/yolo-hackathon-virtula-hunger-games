@@ -12,7 +12,7 @@ export const EndScreen = ({ wonCharacter, won, betValue }: Props) => {
   return (
     <div className="modal">
       <div className="text won">
-        The winner is <span className={`cell ${wonCharacter} stand`}></span>
+        The winner is <span className={`cell ${wonCharacter} winner`}></span>
       </div>
       <div className="text result">
         {won ? `YOU WON ${betValue * 3} mBTC!!!` : 'YOU LOST.. :('}
