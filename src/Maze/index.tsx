@@ -34,7 +34,7 @@ function getStyle(coords: number[]): CSSProperties {
 }
 
 function getMoveClassname(prev: number[], next: number[]) {
-  if(next === outOfBoardCords){
+  if (next === outOfBoardCords) {
     return 'dead';
   }
   let className = '';
@@ -56,26 +56,39 @@ function getMoveClassname(prev: number[], next: number[]) {
 function getCharClasses(step: number, charPositions: number[][][]) {
   const prev = charPositions[step - 1];
   const next = charPositions[step];
-  return [getMoveClassname(prev[0], next[0]), getMoveClassname(prev[1], next[1]), getMoveClassname(prev[2], next[2])]
-
+  return [
+    getMoveClassname(prev[0], next[0]),
+    getMoveClassname(prev[1], next[1]),
+    getMoveClassname(prev[2], next[2]),
+  ];
 }
 
-function getCharAnimations(charsPositions: number[][][], step: number, charIndex: number) {
+function getCharAnimations(
+  charsPositions: number[][][],
+  step: number,
+  charIndex: number
+) {
   const positions = charsPositions[step][charIndex];
   if (positions === outOfBoardCords) {
     return {
-      opacity: 0.7
-    }
+      opacity: 0.7,
+    };
   }
 
   return {
     top: `${positions[0] * 50}px`,
     left: `${positions[1] * 50}px`,
-    transition: { duration: 0.5 }
+    transition: { duration: 0.5 },
   };
 }
 
-const Maze = ({ map }: { map: Cell[][] }) => {
+const Maze = ({
+  map,
+  notifications,
+}: {
+  map: Cell[][];
+  notifications: JSX.Element;
+}) => {
   const [charsPositions, setCharPositions] = useState<number[][][]>([]);
   const [charClasses, setCharClasses] = useState(['', '', '']);
 
@@ -101,6 +114,7 @@ const Maze = ({ map }: { map: Cell[][] }) => {
 
   return (
     <div className="wrapper">
+      {notifications}
       <div className="map">
         {map.map((row, rowIndex) => {
           return (
@@ -122,27 +136,37 @@ const Maze = ({ map }: { map: Cell[][] }) => {
           );
         })}
       </div>
-      {
-        charsPositions.length && (
-          <>
-            <motion.div className={classnames({
+      {charsPositions.length && (
+        <>
+          <motion.div
+            className={classnames({
               cell: true,
               strong: true,
               [charClasses[0]]: true,
-            })} style={getStyle(charsPositions?.[0][0])} animate={strongControls} />
-            <motion.div className={classnames({
+            })}
+            style={getStyle(charsPositions?.[0][0])}
+            animate={strongControls}
+          />
+          <motion.div
+            className={classnames({
               cell: true,
               agile: true,
               [charClasses[1]]: true,
-            })} style={getStyle(charsPositions?.[0][1])} animate={agileControls} />
-            <motion.div className={classnames({
+            })}
+            style={getStyle(charsPositions?.[0][1])}
+            animate={agileControls}
+          />
+          <motion.div
+            className={classnames({
               cell: true,
               wise: true,
               [charClasses[2]]: true,
-            })} style={getStyle(charsPositions?.[0][2])} animate={wiseControls} />
-          </>
-        )
-      }
+            })}
+            style={getStyle(charsPositions?.[0][2])}
+            animate={wiseControls}
+          />
+        </>
+      )}
     </div>
   );
 };
